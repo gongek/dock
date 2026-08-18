@@ -19,7 +19,7 @@ export function SignInPage() {
     setError(null);
     setPending(true);
     try {
-      await signIn("meridian", { redirectTo: "/" });
+      await signIn("meridian", { redirectTo: `${window.location.origin}/` });
     } catch (caught) {
       setError(
         caught instanceof Error ? caught.message : "Could not start Meridian sign-in.",
