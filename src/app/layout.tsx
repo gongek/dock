@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dock | By Meridian",
+  title: "Dock by Meridian",
   description: "Dock by Meridian",
 };
 
