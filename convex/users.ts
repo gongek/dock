@@ -1,6 +1,9 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
+import { getCurrentUser } from "./lib/auth";
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const currentUser = query({
   args: {},
@@ -36,5 +39,34 @@ export const currentUser = query({
       meridianId: user.meridianId,
       discordId: user.discordId,
     };
+  },
+});
+
+export const setEmail = mutation({
+  args: { email: v.string() },
+  returns: v.null(),
+  handler: async (ctx, { email }) => {
+    const user = await getCurrentUser(ctx);
+    const normalized = email.trim().toLowerCase();
+
+    if (!EMAIL_PATTERN.test(normalized)) {
+      throw new Error("Please enter a valid email address.");
+    }
+
+    if (user.email) {
+      throw new Error("Email is already set.");
+    }
+
+    const existing = await ctx.db
+      .query("users")
+      .withIndex("email", (q) => q.eq("email", normalized))
+      .unique();
+
+    if (existing && existing._id !== user._id) {
+      throw new Error("That email is already in use.");
+    }
+
+    await ctx.db.patch(user._id, { email: normalized });
+    return null;
   },
 });

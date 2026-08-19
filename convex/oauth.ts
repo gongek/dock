@@ -11,6 +11,15 @@ export const ALLOWED_REDIRECT_ORIGINS = [
   LOCAL_SITE_URL,
 ] as const;
 
+export function isLocalRedirectOrigin(redirectTo: string): boolean {
+  try {
+    const url = new URL(redirectTo);
+    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
 const PROVIDER_CALLBACK_URLS = {
   meridian: MERIDIAN_CALLBACK_URL,
   discord: DISCORD_CALLBACK_URL,

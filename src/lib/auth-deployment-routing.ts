@@ -4,6 +4,18 @@ function redirectToCookieName(provider: string) {
   return `__Host-${provider}RedirectTo`;
 }
 
+function isLocalRedirectTo(redirectTo: string | null): boolean {
+  if (!redirectTo) {
+    return false;
+  }
+  try {
+    const url = new URL(redirectTo);
+    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
 function readCookie(request: Request, name: string): string | null {
   const header = request.headers.get("cookie");
   if (!header) {
@@ -38,6 +50,18 @@ function productionConvexSiteUrl(): string {
   return url.replace(/\/$/, "");
 }
 
+function developmentConvexSiteUrl(): string {
+  const url =
+    process.env.CONVEX_DEVELOPMENT_SITE_URL ??
+    process.env.NEXT_PUBLIC_CONVEX_SITE_URL;
+  if (!url) {
+    throw new Error(
+      "Missing environment variable `CONVEX_DEVELOPMENT_SITE_URL`",
+    );
+  }
+  return url.replace(/\/$/, "");
+}
+
 export function resolveConvexSiteUrl(
   request: Request,
   provider?: string,
@@ -49,7 +73,11 @@ export function resolveConvexSiteUrl(
     redirectTo = readCookie(request, redirectToCookieName(provider));
   }
 
-  return isStagingRedirectTo(redirectTo)
-    ? stagingConvexSiteUrl()
-    : productionConvexSiteUrl();
+  if (isLocalRedirectTo(redirectTo)) {
+    return developmentConvexSiteUrl();
+  }
+  if (isStagingRedirectTo(redirectTo)) {
+    return stagingConvexSiteUrl();
+  }
+  return productionConvexSiteUrl();
 }

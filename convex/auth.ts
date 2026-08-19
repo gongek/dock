@@ -1,7 +1,11 @@
 import { convexAuth } from "@convex-dev/auth/server";
 import Discord from "./discord";
 import Meridian from "./meridian";
-import { ALLOWED_REDIRECT_ORIGINS, DOCK_SITE_URL } from "./oauth";
+import {
+  ALLOWED_REDIRECT_ORIGINS,
+  DOCK_SITE_URL,
+  isLocalRedirectOrigin,
+} from "./oauth";
 
 function siteUrl() {
   return (process.env.SITE_URL ?? DOCK_SITE_URL).replace(/\/$/, "");
@@ -23,7 +27,12 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
       if (redirectTo.startsWith("?") || redirectTo.startsWith("/")) {
         return `${baseUrl}${redirectTo}`;
       }
-      if (ALLOWED_REDIRECT_ORIGINS.some((origin) => isAllowedOrigin(redirectTo, origin))) {
+      if (
+        isLocalRedirectOrigin(redirectTo) ||
+        ALLOWED_REDIRECT_ORIGINS.some((origin) =>
+          isAllowedOrigin(redirectTo, origin),
+        )
+      ) {
         return redirectTo;
       }
       throw new Error(

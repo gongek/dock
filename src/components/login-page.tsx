@@ -24,9 +24,9 @@ export function LoginPage() {
     try {
       await signIn("meridian", { redirectTo: `${window.location.origin}/dashboard` });
     } catch (caught) {
-      setError(
-        caught instanceof Error ? caught.message : "Could not start Meridian login.",
-      );
+      const message =
+        caught instanceof Error ? caught.message : "Could not start Meridian login.";
+      setError(message || "Could not start Meridian login. Try restarting the dev server.");
       setPendingProvider(null);
     }
   }
@@ -37,9 +37,9 @@ export function LoginPage() {
     try {
       await signIn("discord", { redirectTo: `${window.location.origin}/dashboard` });
     } catch (caught) {
-      setError(
-        caught instanceof Error ? caught.message : "Could not start Discord login.",
-      );
+      const message =
+        caught instanceof Error ? caught.message : "Could not start Discord login.";
+      setError(message || "Could not start Discord login. Try restarting the dev server.");
       setPendingProvider(null);
     }
   }
