@@ -58,9 +58,16 @@ export function LoginPage() {
             <p className="text-xs text-zinc-600">Loading</p>
           ) : isAuthenticated ? (
             <>
-              <p className="text-xs text-zinc-400">
-                Logged in
-                {user?.name ? ` as ${user.name}` : " with Meridian"}
+              <p className="flex items-center justify-center gap-2 text-xs text-zinc-400">
+                <span>Logged in as</span>
+                {user?.image ? (
+                  <img
+                    src={user.image}
+                    alt=""
+                    className="h-5 w-5 rounded-full"
+                  />
+                ) : null}
+                <span>{user?.name ?? "…"}</span>
               </p>
               <button
                 type="button"

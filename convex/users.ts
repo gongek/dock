@@ -11,6 +11,7 @@ export const currentUser = query({
       _creationTime: v.number(),
       name: v.optional(v.string()),
       email: v.optional(v.string()),
+      image: v.optional(v.string()),
       meridianId: v.optional(v.string()),
       discordId: v.optional(v.string()),
     }),
@@ -31,6 +32,7 @@ export const currentUser = query({
       _creationTime: user._creationTime,
       name: user.name,
       email: user.email,
+      image: user.image,
       meridianId: user.meridianId,
       discordId: user.discordId,
     };
