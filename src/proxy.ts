@@ -1,4 +1,8 @@
-import { convexAuthNextjsMiddleware } from "@convex-dev/auth/nextjs/server";
+import {
+  convexAuthNextjsMiddleware,
+  createRouteMatcher,
+  nextjsMiddlewareRedirect,
+} from "@convex-dev/auth/nextjs/server";
 
 function isConvexAuthHttpPath(pathname: string) {
   return (
@@ -8,7 +12,17 @@ function isConvexAuthHttpPath(pathname: string) {
   );
 }
 
-const proxy = convexAuthNextjsMiddleware(undefined, {
+const isLoginPage = createRouteMatcher(["/login"]);
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
+
+const proxy = convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
+  if (isLoginPage(request) && (await convexAuth.isAuthenticated())) {
+    return nextjsMiddlewareRedirect(request, "/dashboard");
+  }
+  if (isProtectedRoute(request) && !(await convexAuth.isAuthenticated())) {
+    return nextjsMiddlewareRedirect(request, "/login");
+  }
+}, {
   cookieConfig: { maxAge: 60 * 60 * 24 * 30 },
   shouldHandleCode(request) {
     return !isConvexAuthHttpPath(new URL(request.url).pathname);
