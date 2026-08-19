@@ -13,8 +13,10 @@ export default defineSchema({
     phoneVerificationTime: v.optional(v.number()),
     isAnonymous: v.optional(v.boolean()),
     meridianId: v.optional(v.string()),
+    discordId: v.optional(v.string()),
   })
     .index("email", ["email"])
     .index("phone", ["phone"])
-    .index("by_meridian_id", ["meridianId"]),
+    .index("by_meridian_id", ["meridianId"])
+    .index("by_discord_id", ["discordId"]),
 });

@@ -12,6 +12,7 @@ export const currentUser = query({
       name: v.optional(v.string()),
       email: v.optional(v.string()),
       meridianId: v.optional(v.string()),
+      discordId: v.optional(v.string()),
     }),
   ),
   handler: async (ctx) => {
@@ -31,6 +32,7 @@ export const currentUser = query({
       name: user.name,
       email: user.email,
       meridianId: user.meridianId,
+      discordId: user.discordId,
     };
   },
 });

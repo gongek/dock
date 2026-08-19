@@ -1,4 +1,5 @@
 import { convexAuth } from "@convex-dev/auth/server";
+import Discord from "./discord";
 import Meridian from "./meridian";
 import { ALLOWED_REDIRECT_ORIGINS, DOCK_SITE_URL } from "./oauth";
 
@@ -15,7 +16,7 @@ function isAllowedOrigin(redirectTo: string, origin: string) {
 }
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
-  providers: [Meridian],
+  providers: [Meridian, Discord],
   callbacks: {
     async redirect({ redirectTo }) {
       const baseUrl = siteUrl();

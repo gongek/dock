@@ -28,6 +28,19 @@ export function LoginPage() {
     }
   }
 
+  async function handleDiscordLogin() {
+    setError(null);
+    setPending(true);
+    try {
+      await signIn("discord", { redirectTo: `${window.location.origin}/dashboard` });
+    } catch (caught) {
+      setError(
+        caught instanceof Error ? caught.message : "Could not start Discord login.",
+      );
+      setPending(false);
+    }
+  }
+
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <div className="flex flex-1 flex-col items-center justify-center gap-8 px-6">
@@ -38,7 +51,7 @@ export function LoginPage() {
               Log in
             </h1>
             <p className="text-xs text-zinc-500">
-              Continue with your Meridian account
+              Continue with Meridian or Discord
             </p>
           </div>
           {isLoading ? (
@@ -72,6 +85,14 @@ export function LoginPage() {
                 className="w-full rounded-full border border-zinc-700 bg-zinc-950 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-zinc-500 hover:bg-zinc-900 disabled:cursor-wait disabled:opacity-60"
               >
                 {pending ? "Redirecting…" : "Continue with Meridian"}
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleDiscordLogin()}
+                disabled={pending}
+                className="w-full rounded-full border border-[#5865F2]/40 bg-[#5865F2]/10 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-[#5865F2]/70 hover:bg-[#5865F2]/20 disabled:cursor-wait disabled:opacity-60"
+              >
+                {pending ? "Redirecting…" : "Continue with Discord"}
               </button>
               {error ? (
                 <p className="text-xs text-red-400/90" role="alert">

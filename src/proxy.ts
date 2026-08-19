@@ -7,6 +7,7 @@ import {
 function isConvexAuthHttpPath(pathname: string) {
   return (
     pathname === "/callback/meridian" ||
+    pathname === "/callback/discord" ||
     pathname.startsWith("/api/auth/signin/") ||
     pathname.startsWith("/api/auth/callback/")
   );

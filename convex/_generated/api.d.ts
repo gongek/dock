@@ -9,6 +9,7 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as discord from "../discord.js";
 import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as meridian from "../meridian.js";
@@ -23,6 +24,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  discord: typeof discord;
   http: typeof http;
   "lib/auth": typeof lib_auth;
   meridian: typeof meridian;
