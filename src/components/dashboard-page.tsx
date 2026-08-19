@@ -39,7 +39,7 @@ export function DashboardPage() {
           </button>
         </div>
       </div>
-      <SiteFooter />
+      <SiteFooter leading={{ label: "Home", href: "/" }} />
     </div>
   );
 }
