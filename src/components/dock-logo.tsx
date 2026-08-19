@@ -124,27 +124,26 @@ export function DockLogo({ className }: { className?: string }) {
   );
 
   const logoClassName = normalizeLogoClassName(className);
-  const showFallback = !shaderReady;
 
   return (
     <div className={`relative h-56 w-56 ${logoClassName}`}>
-      {showFallback ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src="/dock-logo.svg"
-          alt=""
-          aria-hidden
-          width={224}
-          height={224}
-          decoding="sync"
-          fetchPriority="high"
-          className="absolute inset-0 size-full object-contain"
-        />
-      ) : null}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/dock-logo.svg"
+        alt=""
+        aria-hidden={shaderReady}
+        width={224}
+        height={224}
+        decoding="sync"
+        fetchPriority="high"
+        className={`absolute inset-0 z-10 size-full object-contain transition-opacity duration-700 ease-in-out ${
+          shaderReady ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
+      />
       {mounted && textureReady ? (
         <div
           ref={rootRef}
-          className={`dock-logo-shader absolute inset-0 overflow-hidden ${
+          className={`dock-logo-shader absolute inset-0 overflow-hidden transition-opacity duration-700 ease-in-out ${
             shaderReady ? "opacity-100" : "opacity-0"
           }`}
           aria-hidden={!shaderReady}
