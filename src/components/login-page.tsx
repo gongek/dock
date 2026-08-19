@@ -14,31 +14,33 @@ export function LoginPage() {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const user = useQuery(api.users.currentUser);
   const [error, setError] = useState<string | null>(null);
-  const [pending, setPending] = useState(false);
+  const [pendingProvider, setPendingProvider] = useState<
+    "meridian" | "discord" | null
+  >(null);
 
   async function handleMeridianLogin() {
     setError(null);
-    setPending(true);
+    setPendingProvider("meridian");
     try {
       await signIn("meridian", { redirectTo: `${window.location.origin}/dashboard` });
     } catch (caught) {
       setError(
         caught instanceof Error ? caught.message : "Could not start Meridian login.",
       );
-      setPending(false);
+      setPendingProvider(null);
     }
   }
 
   async function handleDiscordLogin() {
     setError(null);
-    setPending(true);
+    setPendingProvider("discord");
     try {
       await signIn("discord", { redirectTo: `${window.location.origin}/dashboard` });
     } catch (caught) {
       setError(
         caught instanceof Error ? caught.message : "Could not start Discord login.",
       );
-      setPending(false);
+      setPendingProvider(null);
     }
   }
 
@@ -89,20 +91,24 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => void handleMeridianLogin()}
-                disabled={pending}
+                disabled={pendingProvider !== null}
                 className="flex w-full items-center justify-center gap-2 rounded-full border border-zinc-700 bg-zinc-950 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-zinc-500 hover:bg-zinc-900 disabled:cursor-wait disabled:opacity-60"
               >
                 <MeridianLogoIcon className="h-4 w-4 shrink-0" />
-                {pending ? "Redirecting…" : "Continue with Meridian"}
+                {pendingProvider === "meridian"
+                  ? "Connecting..."
+                  : "Continue with Meridian"}
               </button>
               <button
                 type="button"
                 onClick={() => void handleDiscordLogin()}
-                disabled={pending}
+                disabled={pendingProvider !== null}
                 className="flex w-full items-center justify-center gap-2 rounded-full border border-[#5865F2]/40 bg-[#5865F2]/10 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-[#5865F2]/70 hover:bg-[#5865F2]/20 disabled:cursor-wait disabled:opacity-60"
               >
                 <DiscordAltIcon className="h-4 w-4 shrink-0" />
-                {pending ? "Redirecting…" : "Continue with Discord"}
+                {pendingProvider === "discord"
+                  ? "Connecting..."
+                  : "Continue with Discord"}
               </button>
               {error ? (
                 <p className="text-xs text-red-400/90" role="alert">
