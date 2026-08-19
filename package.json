@@ -3,15 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "convex dev --start \"next dev --turbopack\"",
-    "dev:frontend": "next dev --turbopack",
+    "dev": "node scripts/ensure-logo-assets.mjs && convex dev --start \"next dev --turbopack -p 3001\"",
+    "dev:frontend": "node scripts/ensure-logo-assets.mjs && next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate:logo-raster": "npx sharp-cli -i public/dock-logo.svg -o public/dock-logo-raster.png resize 1024 1024",
+    "generate:logo-gem-smoke": "node scripts/generate-gem-smoke-logo.mjs",
+    "postinstall": "node scripts/ensure-logo-assets.mjs"
   },
   "dependencies": {
     "@auth/core": "^0.41.1",
     "@convex-dev/auth": "^0.0.95",
+    "@paper-design/shaders": "^0.0.80",
     "@paper-design/shaders-react": "^0.0.80",
     "convex": "^1.44.0",
     "next": "^16.3.1",
@@ -25,6 +29,7 @@
     "@types/react-dom": "^19.2.4",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.1",
+    "playwright": "^1.62.1",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   }

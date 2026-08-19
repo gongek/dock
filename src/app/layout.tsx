@@ -30,6 +30,10 @@ export default function RootLayout({
         lang="en"
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
+        <head>
+          <link rel="preload" href="/dock-logo.svg" as="image" type="image/svg+xml" />
+          <link rel="preload" href="/dock-logo-gem-smoke.png" as="image" type="image/png" />
+        </head>
         <body className="flex min-h-full flex-col font-sans">
           <ConvexClientProvider>{children}</ConvexClientProvider>
         </body>
