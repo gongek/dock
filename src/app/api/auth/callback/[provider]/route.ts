@@ -9,7 +9,7 @@ async function handle(
   if (!PROVIDER_ID.test(provider)) {
     return new Response("Not found", { status: 404 });
   }
-  return proxyConvexHttp(request, `/api/auth/callback/${provider}`);
+  return proxyConvexHttp(request, `/api/auth/callback/${provider}`, provider);
 }
 
 export async function GET(

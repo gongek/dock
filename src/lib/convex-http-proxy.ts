@@ -1,3 +1,5 @@
+import { resolveConvexSiteUrl } from "@/lib/auth-deployment-routing";
+
 const HOP_BY_HOP_REQUEST_HEADERS = [
   "connection",
   "content-length",
@@ -11,20 +13,13 @@ const HOP_BY_HOP_REQUEST_HEADERS = [
   "upgrade",
 ];
 
-function convexSiteUrl(): string {
-  const cloudUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
-  if (!cloudUrl) {
-    throw new Error("Missing environment variable `NEXT_PUBLIC_CONVEX_URL`");
-  }
-  return cloudUrl.replace(/\.cloud$/, ".site").replace(/\/$/, "");
-}
-
 export async function proxyConvexHttp(
   request: Request,
   convexPath: string,
+  provider?: string,
 ): Promise<Response> {
   const incoming = new URL(request.url);
-  const target = new URL(`${convexSiteUrl()}${convexPath}`);
+  const target = new URL(`${resolveConvexSiteUrl(request, provider)}${convexPath}`);
   target.search = incoming.search;
 
   const headers = new Headers(request.headers);
