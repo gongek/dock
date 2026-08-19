@@ -28,6 +28,7 @@ export default function Meridian(
         response_type: "code",
         scope: "user.identify offline_access",
         redirect_uri: MERIDIAN_CALLBACK_URL,
+        consent: "skip",
       },
     },
     token: "https://meridian.surf/api/oauth/token",
