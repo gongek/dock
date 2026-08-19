@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { DockLogo } from "@/components/dock-logo";
+import { DiscordAltIcon, MeridianLogoIcon } from "@/components/oauth-icons";
 import { SiteFooter } from "@/components/site-footer";
 
 export function LoginPage() {
@@ -89,16 +90,18 @@ export function LoginPage() {
                 type="button"
                 onClick={() => void handleMeridianLogin()}
                 disabled={pending}
-                className="w-full rounded-full border border-zinc-700 bg-zinc-950 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-zinc-500 hover:bg-zinc-900 disabled:cursor-wait disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 rounded-full border border-zinc-700 bg-zinc-950 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-zinc-500 hover:bg-zinc-900 disabled:cursor-wait disabled:opacity-60"
               >
+                <MeridianLogoIcon className="h-4 w-4 shrink-0" />
                 {pending ? "Redirecting…" : "Continue with Meridian"}
               </button>
               <button
                 type="button"
                 onClick={() => void handleDiscordLogin()}
                 disabled={pending}
-                className="w-full rounded-full border border-[#5865F2]/40 bg-[#5865F2]/10 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-[#5865F2]/70 hover:bg-[#5865F2]/20 disabled:cursor-wait disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 rounded-full border border-[#5865F2]/40 bg-[#5865F2]/10 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-[#5865F2]/70 hover:bg-[#5865F2]/20 disabled:cursor-wait disabled:opacity-60"
               >
+                <DiscordAltIcon className="h-4 w-4 shrink-0" />
                 {pending ? "Redirecting…" : "Continue with Discord"}
               </button>
               {error ? (
