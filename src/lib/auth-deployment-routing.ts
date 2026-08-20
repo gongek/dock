@@ -1,3 +1,5 @@
+import { CONVEX_DEV_SITE_URL } from "./convex-site-urls";
+
 export const DOCK_STAGING_URL = "https://dock.citrum.app";
 
 function redirectToCookieName(provider: string) {
@@ -51,14 +53,7 @@ function productionConvexSiteUrl(): string {
 }
 
 function developmentConvexSiteUrl(): string {
-  const url =
-    process.env.CONVEX_DEVELOPMENT_SITE_URL ??
-    process.env.NEXT_PUBLIC_CONVEX_SITE_URL;
-  if (!url) {
-    throw new Error(
-      "Missing environment variable `CONVEX_DEVELOPMENT_SITE_URL`",
-    );
-  }
+  const url = process.env.CONVEX_DEVELOPMENT_SITE_URL ?? CONVEX_DEV_SITE_URL;
   return url.replace(/\/$/, "");
 }
 
