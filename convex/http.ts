@@ -1,10 +1,23 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { auth } from "./auth";
+import { discordOAuthCallback } from "./discordCallback";
 
 const http = httpRouter();
 
 auth.addHttpRoutes(http);
+
+http.route({
+  path: "/api/auth/callback/discord",
+  method: "GET",
+  handler: discordOAuthCallback,
+});
+
+http.route({
+  path: "/api/auth/callback/discord",
+  method: "POST",
+  handler: discordOAuthCallback,
+});
 
 function createCallbackForwarder(provider: string) {
   return httpAction(async (_ctx, request) => {

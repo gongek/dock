@@ -10,10 +10,13 @@
 
 import type * as auth from "../auth.js";
 import type * as discord from "../discord.js";
+import type * as discordCallback from "../discordCallback.js";
+import type * as discordSignup from "../discordSignup.js";
 import type * as http from "../http.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as meridian from "../meridian.js";
 import type * as oauth from "../oauth.js";
+import type * as userProfile from "../userProfile.js";
 import type * as users from "../users.js";
 
 import type {
@@ -25,10 +28,13 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   discord: typeof discord;
+  discordCallback: typeof discordCallback;
+  discordSignup: typeof discordSignup;
   http: typeof http;
   "lib/auth": typeof lib_auth;
   meridian: typeof meridian;
   oauth: typeof oauth;
+  userProfile: typeof userProfile;
   users: typeof users;
 }>;
 

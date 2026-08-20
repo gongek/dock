@@ -19,4 +19,12 @@ export default defineSchema({
     .index("phone", ["phone"])
     .index("by_meridian_id", ["meridianId"])
     .index("by_discord_id", ["discordId"]),
+  pendingDiscordSignups: defineTable({
+    token: v.string(),
+    providerAccountId: v.string(),
+    profile: v.any(),
+    signature: v.string(),
+    redirectTo: v.string(),
+    expirationTime: v.number(),
+  }).index("by_token", ["token"]),
 });
