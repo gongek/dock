@@ -20,6 +20,18 @@ export function isLocalRedirectOrigin(redirectTo: string): boolean {
   }
 }
 
+export function isDockSubdomainRedirectOrigin(redirectTo: string): boolean {
+  try {
+    const { hostname, protocol } = new URL(redirectTo);
+    if (protocol !== "https:") {
+      return false;
+    }
+    return hostname === "dock.surf" || hostname.endsWith(".dock.surf");
+  } catch {
+    return false;
+  }
+}
+
 const PROVIDER_CALLBACK_URLS = {
   meridian: MERIDIAN_CALLBACK_URL,
   discord: DISCORD_CALLBACK_URL,

@@ -6,6 +6,7 @@ import Meridian from "./meridian";
 import {
   ALLOWED_REDIRECT_ORIGINS,
   DOCK_SITE_URL,
+  isDockSubdomainRedirectOrigin,
   isLocalRedirectOrigin,
 } from "./oauth";
 import {
@@ -23,6 +24,7 @@ export const authConfig = {
       }
       if (
         isLocalRedirectOrigin(redirectTo) ||
+        isDockSubdomainRedirectOrigin(redirectTo) ||
         ALLOWED_REDIRECT_ORIGINS.some((origin) =>
           isAllowedOrigin(redirectTo, origin),
         )
