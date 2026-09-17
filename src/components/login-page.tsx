@@ -1,6 +1,5 @@
 "use client";
 
-import "boxicons/css/boxicons.min.css";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth, useQuery } from "convex/react";
 import Link from "next/link";
@@ -8,28 +7,23 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { LandingAtmosphere } from "@/components/landing/landing-atmosphere";
-import { DiscordAltIcon, MeridianLogoIcon } from "@/components/oauth-icons";
+import {
+  SocialLoginButtons,
+  SocialLoginError,
+} from "@/components/social-login-buttons";
 import {
   isAllowedLoginReturnTo,
   resolveLoginRedirectTarget,
   resolveLoginReturnToSubtitle,
 } from "@/lib/login-redirect";
-import { legalPath } from "@/lib/policies/legalPath";
+import { AuthLegalFooter } from "@/components/auth-legal-footer";
+import { shouldShowAuthLegalFooter } from "@/lib/auth-legal";
 import { userFacingError } from "@/lib/user-facing-error";
-
-function LoginButtonSpinner() {
-  return (
-    <i
-      className="bx bx-loader-alt login-button-spinner shrink-0 text-base leading-none"
-      aria-hidden
-    />
-  );
-}
 
 export function LoginPage({ returnTo }: { returnTo?: string }) {
   const router = useRouter();
   const { signIn, signOut } = useAuthActions();
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
   const user = useQuery(api.users.currentUser);
   const [error, setError] = useState<string | null>(null);
   const [pendingProvider, setPendingProvider] = useState<
@@ -42,6 +36,10 @@ export function LoginPage({ returnTo }: { returnTo?: string }) {
   const subtitle = hasReturnTo && returnTo
     ? resolveLoginReturnToSubtitle(returnTo)
     : "Log in to manage your sites.";
+  const showLegalFooter = shouldShowAuthLegalFooter({
+    authLoading,
+    isAuthenticated,
+  });
 
   async function handleMeridianLogin() {
     setError(null);
@@ -112,9 +110,9 @@ export function LoginPage({ returnTo }: { returnTo?: string }) {
                   </p>
                 </div>
 
-                <div className="mt-8 flex flex-col gap-3">
+                <div className="mt-8">
                   {isAuthenticated ? (
-                    <>
+                    <div className="flex flex-col gap-3">
                       <div className="flex items-center justify-center gap-2.5 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
                         {user?.image ? (
                           <img
@@ -143,68 +141,22 @@ export function LoginPage({ returnTo }: { returnTo?: string }) {
                       >
                         Sign out
                       </button>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => void handleMeridianLogin()}
-                        disabled={pendingProvider !== null}
-                        aria-busy={pendingProvider === "meridian"}
-                        className="flex w-full items-center justify-center gap-2 rounded-full bg-zinc-100 px-5 py-2.5 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-300 disabled:cursor-wait disabled:opacity-60"
-                      >
-                        {pendingProvider === "meridian" ? (
-                          <LoginButtonSpinner />
-                        ) : (
-                          <MeridianLogoIcon className="h-4 w-4 shrink-0" />
-                        )}
-                        Continue with Meridian
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => void handleDiscordLogin()}
-                        disabled={pendingProvider !== null}
-                        aria-busy={pendingProvider === "discord"}
-                        className="flex w-full items-center justify-center gap-2 rounded-full bg-[#5865F2] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#4c58d2] disabled:cursor-wait disabled:opacity-60"
-                      >
-                        {pendingProvider === "discord" ? (
-                          <LoginButtonSpinner />
-                        ) : (
-                          <DiscordAltIcon className="h-4 w-4 shrink-0" />
-                        )}
-                        Continue with Discord
-                      </button>
-                      {error ? (
-                        <p
-                          className="rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-center text-xs text-red-300"
-                          role="alert"
-                        >
-                          {error}
-                        </p>
-                      ) : null}
-                    </>
+                    <SocialLoginButtons
+                      pendingProvider={pendingProvider}
+                      onMeridian={() => void handleMeridianLogin()}
+                      onDiscord={() => void handleDiscordLogin()}
+                      footer={error ? <SocialLoginError message={error} /> : null}
+                    />
                   )}
                 </div>
                 </div>
               </div>
             </div>
-            <p className="mx-auto w-full max-w-md shrink-0 px-6 pb-6 text-center text-xs leading-5 text-zinc-600">
-              By continuing, you agree to our{" "}
-              <Link
-                href={legalPath("terms")}
-                className="text-zinc-400 underline underline-offset-2 transition-colors hover:text-zinc-200"
-              >
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link
-                href={legalPath("privacy")}
-                className="text-zinc-400 underline underline-offset-2 transition-colors hover:text-zinc-200"
-              >
-                Privacy Policy
-              </Link>
-              .
-            </p>
+            {showLegalFooter ? (
+              <AuthLegalFooter className="mx-auto w-full max-w-md shrink-0 px-6 pb-6" />
+            ) : null}
             </div>
           </section>
       </main>
