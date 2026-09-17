@@ -1,45 +1,59 @@
 "use client";
 
-import { useAuthActions } from "@convex-dev/auth/react";
+import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { DockLogo } from "@/components/dock-logo";
-import { SiteFooter } from "@/components/site-footer";
 
 export function DashboardPage() {
-  const { signOut } = useAuthActions();
   const user = useQuery(api.users.currentUser);
+  const sites = useQuery(api.sites.listMySites);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col">
-      <div className="flex flex-1 flex-col items-center justify-center gap-8 px-6">
-        <DockLogo className="h-auto w-40" />
-        <div className="flex w-full max-w-xs flex-col items-center gap-4 text-center">
-          <div className="flex flex-col gap-1">
-            <h1 className="text-sm font-medium tracking-wide text-zinc-200">
-              Dashboard
-            </h1>
-            <p className="text-xs text-zinc-500">
-              {user === undefined
-                ? "Loading…"
-                : user?.name
-                  ? `Welcome back, ${user.name}`
-                  : "Welcome back"}
+    <div className="flex flex-1 flex-col">
+      <header className="border-b border-zinc-800/80 px-8 py-6">
+        <h1 className="text-lg font-medium tracking-wide text-zinc-100">Overview</h1>
+        <p className="mt-1 text-xs text-zinc-500">
+          {user === undefined
+            ? "Loading…"
+            : user?.name
+              ? `Welcome back, ${user.name}`
+              : "Welcome back"}
+        </p>
+      </header>
+
+      <div className="flex flex-1 flex-col gap-6 px-8 py-8">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-5">
+            <p className="text-xs text-zinc-500">Sites</p>
+            <p className="mt-2 text-2xl font-medium text-zinc-100">
+              {sites === undefined ? "—" : sites.sites.length}
+            </p>
+            <p className="mt-1 text-xs text-zinc-500">
+              {sites ? `On ${sites.plan} plan` : "Loading plan…"}
             </p>
           </div>
-          {user?.email ? (
-            <p className="text-xs text-zinc-400">{user.email}</p>
-          ) : null}
-          <button
-            type="button"
-            onClick={() => void signOut()}
-            className="w-full rounded-full border border-zinc-700 bg-zinc-950 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-zinc-500 hover:bg-zinc-900"
-          >
-            Sign out
-          </button>
+
+          <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-5">
+            <p className="text-xs text-zinc-500">Account</p>
+            <p className="mt-2 truncate text-sm font-medium text-zinc-200">
+              {user?.email ?? user?.name ?? "—"}
+            </p>
+            <p className="mt-1 text-xs text-zinc-500">Signed in</p>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-5">
+          <p className="text-sm font-medium text-zinc-200">Quick actions</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href="/dashboard/sites"
+              className="rounded-full border border-zinc-700 bg-zinc-900 px-5 py-2.5 text-sm text-zinc-100 transition-colors hover:border-zinc-500 hover:bg-zinc-800"
+            >
+              Manage sites
+            </Link>
+          </div>
         </div>
       </div>
-      <SiteFooter leading={{ label: "Home", href: "/" }} />
     </div>
   );
 }
