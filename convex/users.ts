@@ -1,6 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 import { query } from "./_generated/server";
+import { normalizeOwnerPlan } from "./lib/siteLimits";
 
 export const currentUser = query({
   args: {},
@@ -14,6 +15,13 @@ export const currentUser = query({
       image: v.optional(v.string()),
       meridianId: v.optional(v.string()),
       discordId: v.optional(v.string()),
+      ownerPlan: v.union(
+        v.literal("free"),
+        v.literal("hobby"),
+        v.literal("pro"),
+        v.literal("max"),
+        v.literal("enterprise"),
+      ),
     }),
   ),
   handler: async (ctx) => {
@@ -35,6 +43,7 @@ export const currentUser = query({
       image: user.image,
       meridianId: user.meridianId,
       discordId: user.discordId,
+      ownerPlan: normalizeOwnerPlan(user.ownerPlan),
     };
   },
 });
