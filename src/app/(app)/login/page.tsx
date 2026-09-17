@@ -6,6 +6,11 @@ export const metadata: Metadata = {
   description: "Log in to Dock with Meridian",
 };
 
-export default function Login() {
-  return <LoginPage />;
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ returnTo?: string }>;
+}) {
+  const { returnTo } = await searchParams;
+  return <LoginPage returnTo={returnTo} />;
 }
