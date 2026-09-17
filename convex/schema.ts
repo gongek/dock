@@ -187,7 +187,11 @@ export default defineSchema({
     siteId: v.id("sites"),
     key: v.string(),
     defaultValue: v.string(),
-    source: v.union(v.literal("manual"), v.literal("meridian_case")),
+    source: v.union(
+      v.literal("manual"),
+      v.literal("meridian_case"),
+      v.literal("meridian_storage"),
+    ),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
@@ -236,6 +240,7 @@ export default defineSchema({
     .index("by_site", ["siteId"])
     .index("by_site_and_public_slug", ["siteId", "publicSlug"])
     .index("by_site_and_case_number", ["siteId", "caseNumber"])
+    .index("by_site_and_meridian_case", ["siteId", "meridianCaseId"])
     .index("by_site_bot_scope_guild", ["siteId", "meridianBotId", "scope", "guildKey"]),
 
   siteDiscordSessions: defineTable({
