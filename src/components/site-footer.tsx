@@ -15,7 +15,9 @@ export function SiteFooter({ leading }: SiteFooterProps = {}) {
           {leading.label}
         </Link>
       ) : (
-        "Coming soon"
+        <Link href="/premium" className="transition-colors hover:text-zinc-300">
+          Pricing
+        </Link>
       )}
       <span className="mx-1.5">•</span>
       <Link href="/login" className="transition-colors hover:text-zinc-300">
