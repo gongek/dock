@@ -15,6 +15,14 @@ import {
   resolvePublicSiteBasePath,
 } from "@/lib/site-host";
 import {
+  buildOnboardingPath,
+  buildOnboardingUrl,
+  isOnboardingAppHost,
+  ONBOARDING_SUBDOMAIN,
+  onboardingInternalPath,
+  parseOnboardingLocalPrefix,
+} from "@/lib/onboarding-host";
+import {
   readSiteDiscordCookies,
 } from "@/lib/site-discord-auth";
 import { DISCORD_SITE_DEFAULT_SCOPES } from "@/lib/page-access";
@@ -27,6 +35,7 @@ function isConvexAuthHttpPath(pathname: string) {
   return (
     pathname === "/callback/meridian" ||
     pathname === "/callback/discord" ||
+    pathname === "/callback/onboarding" ||
     pathname.startsWith("/callback/discord/site") ||
     pathname.startsWith("/auth/discord/site") ||
     pathname.startsWith("/api/auth/signin/") ||
@@ -37,6 +46,10 @@ function isConvexAuthHttpPath(pathname: string) {
 
 const isLoginPage = createRouteMatcher(["/login"]);
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
+const isOnboardingProtectedRoute = createRouteMatcher([
+  "/onboarding/sites/config",
+  "/onboarding/sites/config/(.*)",
+]);
 
 type SiteHostMeta = {
   hostKind?: "bot_subdomain" | "custom_slug";
@@ -70,6 +83,10 @@ async function resolveLocalSubdomainMeta(
   origin: string,
   subdomainKey: string,
 ): Promise<{ hostMeta: SiteHostMeta; routingSlug: string } | null> {
+  if (subdomainKey === ONBOARDING_SUBDOMAIN) {
+    return null;
+  }
+
   const bySlug = await fetchSiteHostMeta(origin, { slug: subdomainKey });
   if (bySlug) {
     return { hostMeta: bySlug, routingSlug: subdomainKey };
@@ -107,12 +124,57 @@ function rewriteSiteRequest(
   });
 }
 
+function rewriteOnboardingRequest(request: Request, publicSubPath: string) {
+  const url = new URL(request.url);
+  url.pathname = onboardingInternalPath(publicSubPath);
+  return NextResponse.rewrite(url);
+}
+
+function redirectToOnboardingLogin(request: Request, returnPath: string) {
+  const loginPath = buildOnboardingPath("/sites/link");
+  const loginUrl = new URL(loginPath, request.url);
+  loginUrl.searchParams.set(
+    "returnTo",
+    buildOnboardingUrl(returnPath.startsWith("/") ? returnPath : `/${returnPath}`),
+  );
+  return NextResponse.redirect(loginUrl);
+}
+
 const proxy = convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
   const url = new URL(request.url);
   const hostname = url.hostname;
   const pathname = url.pathname;
 
+  if (
+    pathname === "/dashboard/sites" &&
+    url.searchParams.get("onboarding") === "1"
+  ) {
+    const target = new URL(buildOnboardingUrl("/sites/link"));
+    const bot = url.searchParams.get("bot");
+    if (bot) target.searchParams.set("bot", bot);
+    return NextResponse.redirect(target);
+  }
+
+  if (isOnboardingAppHost(hostname)) {
+    if (pathname === "/" || pathname === "") {
+      return NextResponse.redirect(
+        new URL(buildOnboardingPath("/sites/link"), request.url),
+      );
+    }
+    return rewriteOnboardingRequest(request, pathname);
+  }
+
   if (isLocalhostHostname(hostname)) {
+    const onboardingLocal = parseOnboardingLocalPrefix(pathname);
+    if (onboardingLocal) {
+      if (onboardingLocal.subPath === "/" || onboardingLocal.subPath === "") {
+        return NextResponse.redirect(
+          new URL(buildOnboardingPath("/sites/link"), request.url),
+        );
+      }
+      return rewriteOnboardingRequest(request, onboardingLocal.subPath);
+    }
+
     const localSite = parseLocalSubdomainPath(pathname);
     if (localSite) {
       if (
@@ -217,6 +279,20 @@ const proxy = convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
     }
 
     return rewriteSiteRequest(request, siteSlug, pathname);
+  }
+
+  if (pathname.startsWith("/onboarding")) {
+    if (pathname === "/onboarding" || pathname === "/onboarding/") {
+      return NextResponse.redirect(new URL("/onboarding/sites/link", request.url));
+    }
+  }
+
+  if (
+    isOnboardingProtectedRoute(request) &&
+    !(await convexAuth.isAuthenticated())
+  ) {
+    const returnPath = pathname.replace(/^\/onboarding/, "") || "/sites/link";
+    return redirectToOnboardingLogin(request, returnPath + url.search);
   }
 
   if (isLoginPage(request) && (await convexAuth.isAuthenticated())) {

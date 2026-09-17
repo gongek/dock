@@ -26,6 +26,8 @@ export async function proxyConvexHttp(
   for (const header of HOP_BY_HOP_REQUEST_HEADERS) {
     headers.delete(header);
   }
+  headers.set("x-forwarded-host", incoming.host);
+  headers.set("x-forwarded-proto", incoming.protocol.replace(/:$/, ""));
 
   const response = await fetch(target, {
     method: request.method,

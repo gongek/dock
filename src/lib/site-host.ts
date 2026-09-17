@@ -111,11 +111,13 @@ export function parseSiteSlugFromHost(hostname: string): string | null {
   if (host.endsWith(`.${DOCK_APEX}`)) {
     const label = host.slice(0, -(`.${DOCK_APEX}`.length));
     if (!label || label.includes(".")) return null;
+    if (label === "onboarding") return null;
     return label;
   }
   if (host.endsWith(`.${DOCK_STAGING_APEX}`)) {
     const label = host.slice(0, -(`.${DOCK_STAGING_APEX}`.length));
     if (!label || label.includes(".")) return null;
+    if (label === "onboarding") return null;
     return label;
   }
   return null;
