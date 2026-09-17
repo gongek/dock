@@ -62,7 +62,7 @@ function withDiscordContext<T extends TemplateContext>(
   context: T,
   discord: DiscordVisitorContext | undefined,
 ): T {
-  return discord ? { ...context, discord } : context;
+  return discord ? { ...context, discord, me: discord } : context;
 }
 
 function siteTemplateFields(payload: NonNullable<SitePayload>) {
@@ -86,12 +86,10 @@ function navbarContextPages(pages: RenderPage[]) {
     }));
 }
 
-function siteRenderFields(payload: NonNullable<SitePayload>, preview = false) {
-  const published = payload.mode === "published";
-  const resolveVariables = published || preview;
+function siteRenderFields() {
   return {
-    resolveVariables,
-    ...(resolveVariables ? { mode: "public" as const } : {}),
+    resolveVariables: true,
+    mode: "public" as const,
   };
 }
 
@@ -101,8 +99,11 @@ function buildView(
   caseRecords: CaseRecords | undefined,
   discord?: DiscordVisitorContext,
   preview = false,
+  templateVars?: Record<string, string>,
 ) {
-  const renderFields = siteRenderFields(payload, preview);
+  const renderFields = siteRenderFields();
+  const varsContext =
+    templateVars && Object.keys(templateVars).length > 0 ? { vars: templateVars } : {};
   const pages: RenderPage[] =
     payload.mode === "published"
       ? payload.snapshot.pages.map((page) => ({
@@ -172,6 +173,7 @@ function buildView(
           {
             ...siteTemplateFields(payload),
             ...renderFields,
+            ...varsContext,
             page: { title: detailPage.title, slug: detailPage.slug },
             pages: navbarContextPages(pages),
             ...buildCaseTemplateContext(caseRecordToPayload(caseRow)),
@@ -198,6 +200,7 @@ function buildView(
       {
         ...siteTemplateFields(payload),
         ...renderFields,
+        ...varsContext,
         page: { title: page.title, slug: page.slug },
         pages: navbarContextPages(pages),
         cases: caseRecords?.map((row: Parameters<typeof caseRecordToPayload>[0]) => caseRecordToPayload(row)),
@@ -214,11 +217,12 @@ export function publicSiteDocumentMeta(
   caseRecords?: CaseRecords,
   discord?: DiscordVisitorContext,
   preview = false,
+  templateVars?: Record<string, string>,
 ): { title: string; faviconUrl: string | null } {
   if (!payload) {
     return { title: "Site", faviconUrl: null };
   }
-  const view = buildView(payload, pathname, caseRecords, discord, preview);
+  const view = buildView(payload, pathname, caseRecords, discord, preview, templateVars);
   return {
     title: resolveSiteDocumentTitle(view?.page.title, payload.site.title),
     faviconUrl: payload.faviconUrl ?? null,
@@ -229,6 +233,7 @@ export function PublicSitePage({
   pathname,
   payload,
   caseRecords,
+  templateVars,
   discordVisitor,
   draft = false,
   publicBasePath = "",
@@ -236,6 +241,7 @@ export function PublicSitePage({
   pathname: string;
   payload: SitePayload;
   caseRecords?: CaseRecords;
+  templateVars?: Record<string, string>;
   discordVisitor?: Parameters<typeof buildDiscordTemplateContext>[0];
   draft?: boolean;
   publicBasePath?: string;
@@ -250,6 +256,7 @@ export function PublicSitePage({
     caseRecords,
     buildDiscordTemplateContext(discordVisitor),
     draft,
+    templateVars,
   );
   if (!view) {
     return <p className="p-6 text-sm text-zinc-500">Page not found.</p>;
