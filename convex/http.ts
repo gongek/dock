@@ -2,6 +2,7 @@ import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { auth } from "./auth";
 import { discordOAuthCallback } from "./discordCallback";
+import { meridianOAuthCallback } from "./meridianCallback";
 
 const http = httpRouter();
 
@@ -17,6 +18,18 @@ http.route({
   path: "/api/auth/callback/discord",
   method: "POST",
   handler: discordOAuthCallback,
+});
+
+http.route({
+  path: "/api/auth/callback/meridian",
+  method: "GET",
+  handler: meridianOAuthCallback,
+});
+
+http.route({
+  path: "/api/auth/callback/meridian",
+  method: "POST",
+  handler: meridianOAuthCallback,
 });
 
 function createCallbackForwarder(provider: string) {
