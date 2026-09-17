@@ -9,6 +9,7 @@ import {
   isDockSubdomainRedirectOrigin,
   isLocalRedirectOrigin,
 } from "./oauth";
+import { resolveExistingUserId } from "./userIdentity";
 import {
   DISCORD_EMAIL_REQUIRED,
   hasUsableEmail,
@@ -42,26 +43,10 @@ export const authConfig = {
         providerId,
       );
 
-      let userId = args.existingUserId ?? null;
-      if (userId) {
-        const existing = await ctx.db.get(userId);
-        if (!existing) {
-          userId = null;
-        }
-      }
-
-      if (
-        !userId &&
-        hasUsableEmail(profile.email)
-      ) {
-        const existingByEmail = await ctx.db
-          .query("users")
-          .withIndex("email", (q: any) => q.eq("email", profile.email))
-          .unique();
-        if (existingByEmail) {
-          userId = existingByEmail._id;
-        }
-      }
+      const userId = await resolveExistingUserId(ctx, {
+        existingUserId: args.existingUserId ?? null,
+        profile,
+      });
 
       if (!userId && providerId === "discord" && !hasUsableEmail(profile.email)) {
         throw new Error(DISCORD_EMAIL_REQUIRED);
@@ -116,6 +101,16 @@ export function getDiscordAuthProvider() {
   );
   if (!provider) {
     throw new Error("Discord provider is not configured");
+  }
+  return provider;
+}
+
+export function getMeridianAuthProvider() {
+  const provider = materializedAuthConfig.providers.find(
+    (candidate: { id: string }) => candidate.id === "meridian",
+  );
+  if (!provider) {
+    throw new Error("Meridian provider is not configured");
   }
   return provider;
 }
