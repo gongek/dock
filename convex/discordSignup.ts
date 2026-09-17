@@ -5,6 +5,7 @@ import {
   internalQuery,
 } from "./_generated/server";
 import { internal } from "./_generated/api";
+import { resolveExistingUserId } from "./userIdentity";
 import { hasUsableEmail, sanitizeUserProfile } from "./userProfile";
 
 const PENDING_SIGNUP_TTL_MS = 1000 * 60 * 15;
@@ -92,13 +93,29 @@ export const readPending = internalMutation({
       throw new Error("This sign-up link expired. Start Discord login again.");
     }
 
-    const existing = await ctx.db
-      .query("users")
-      .withIndex("email", (q) => q.eq("email", normalized))
-      .unique();
+    const profile = sanitizeUserProfile(
+      {
+        ...(pending.profile as Record<string, unknown>),
+        email: normalized,
+        discordId: pending.providerAccountId,
+      },
+      "discord",
+    );
 
-    if (existing) {
-      throw new Error("That email is already in use.");
+    const existingUserId = await resolveExistingUserId(ctx, {
+      existingUserId: null,
+      profile,
+    });
+
+    if (!existingUserId) {
+      const existingByEmail = await ctx.db
+        .query("users")
+        .withIndex("email", (q) => q.eq("email", normalized))
+        .unique();
+
+      if (existingByEmail) {
+        throw new Error("That email is already in use.");
+      }
     }
 
     return {

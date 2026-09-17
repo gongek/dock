@@ -16,6 +16,12 @@ import {
   hasUsableEmail,
   sanitizeUserProfile,
 } from "./userProfile";
+import {
+  SiteAccessErrorCode,
+  buildSiteAccessErrorUrl,
+  publicSiteAccessErrorCode,
+} from "./lib/siteAccessError";
+import { parseSiteDiscordOAuthState } from "./lib/siteDiscordState";
 
 const providerId = "discord";
 
@@ -81,8 +87,36 @@ async function redirectToEmailForm(
   });
 }
 
+async function handleSiteDiscordCallback(_ctx: ActionCtx, request: Request) {
+  const url = new URL(request.url);
+  const stateParam = url.searchParams.get("state")?.trim() ?? "";
+  const code = url.searchParams.get("code")?.trim() ?? "";
+  const parsedState = parseSiteDiscordOAuthState(stateParam);
+
+  if (!parsedState || !code) {
+    const origin = parsedState?.origin ?? "https://dock.surf";
+    return Response.redirect(
+      await buildSiteAccessErrorUrl(
+        origin,
+        SiteAccessErrorCode.DiscordCancelled,
+        { slug: parsedState?.siteSlug },
+      ),
+    );
+  }
+
+  const completionUrl = new URL("/callback/discord/site", parsedState.origin);
+  completionUrl.searchParams.set("code", code);
+  completionUrl.searchParams.set("state", stateParam);
+  return Response.redirect(completionUrl.toString());
+}
+
 async function handleDiscordCallback(ctx: ActionCtx, request: Request) {
   const url = new URL(request.url);
+  const stateParam = url.searchParams.get("state");
+  if (stateParam && parseSiteDiscordOAuthState(stateParam)) {
+    return await handleSiteDiscordCallback(ctx, request);
+  }
+
   const provider = getDiscordAuthProvider();
   const cookies = getCookies(request);
   const maybeRedirectTo = useRedirectToParam(providerId, cookies);
@@ -161,10 +195,22 @@ async function handleDiscordCallback(ctx: ActionCtx, request: Request) {
 }
 
 export const discordOAuthCallback = httpAction(async (ctx, request) => {
+  const stateParam = new URL(request.url).searchParams.get("state");
+  const siteState = stateParam ? parseSiteDiscordOAuthState(stateParam) : null;
+
   try {
     return await handleDiscordCallback(ctx, request);
   } catch (error) {
     logError(error);
+    if (siteState) {
+      return Response.redirect(
+        await buildSiteAccessErrorUrl(
+          siteState.origin,
+          publicSiteAccessErrorCode(error),
+          { slug: siteState.siteSlug },
+        ),
+      );
+    }
     const cookies = getCookies(request);
     const maybeRedirectTo = useRedirectToParam(providerId, cookies);
     const destinationUrl = await resolveRedirectDestination(
