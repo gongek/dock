@@ -15,7 +15,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { useMutation, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
@@ -258,6 +258,9 @@ export function SiteBuilder({
   const updatePage = useMutation(api.sitePages.updatePage);
   const updateSiteMeta = useMutation(api.sites.updateSiteMeta);
   const publishSite = useMutation(api.sites.publishSite);
+  const syncMeridianVariables = useAction(
+    api.meridian.integrationActions.syncMeridianVariablesForSite,
+  );
   const ensureCaseDetail = useMutation(api.sitePages.ensureCaseDetailPage);
   const seedCases = useMutation(api.siteCases.seedMockCases);
   const upsertCollection = useMutation(api.siteCases.upsertCaseCollection);
@@ -621,13 +624,28 @@ export function SiteBuilder({
     try {
       await flushSave();
       await publishSite({ siteId });
+      if (meridianBotId) {
+        await syncMeridianVariables({
+          siteId,
+          meridianBotId,
+          guildId: linkedGuildId,
+        });
+      }
       window.open(publishedUrl, "_blank", "noopener,noreferrer");
     } catch (cause) {
       window.alert(userFacingError(cause, "Could not publish site."));
     } finally {
       setPublishing(false);
     }
-  }, [flushSave, publishSite, siteId, publishedUrl]);
+  }, [
+    flushSave,
+    linkedGuildId,
+    meridianBotId,
+    publishSite,
+    siteId,
+    publishedUrl,
+    syncMeridianVariables,
+  ]);
 
   async function setupCaseCollection(block: SiteBlock) {
     const botId = meridianBotId ?? "mock";

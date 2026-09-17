@@ -105,7 +105,7 @@ export function SiteSettingsDialog({
       aria-hidden={hidden}
     >
       <aside className="site-builder-surface flex w-60 shrink-0 flex-col border-r border-white/[0.07] py-4">
-        <p className="mb-2 px-4 text-[11px] font-medium uppercase tracking-wide text-zinc-500">
+        <p className="mb-2 px-4 text-[11px] font-medium tracking-wide text-zinc-500">
           Site settings
         </p>
         <nav className="flex flex-col gap-0.5 px-2">
