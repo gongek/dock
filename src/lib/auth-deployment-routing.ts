@@ -10,13 +10,17 @@ function redirectToCookieName(provider: string) {
   return `__Host-${provider}RedirectTo`;
 }
 
+function isLocalHostname(hostname: string): boolean {
+  return hostname === "localhost" || hostname === "127.0.0.1";
+}
+
 function isLocalRedirectTo(redirectTo: string | null): boolean {
   if (!redirectTo) {
     return false;
   }
   try {
     const url = new URL(redirectTo);
-    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
+    return isLocalHostname(url.hostname);
   } catch {
     return false;
   }
@@ -82,7 +86,11 @@ export function resolveConvexSiteUrl(
     redirectTo = readCookie(request, redirectToCookieName(provider));
   }
 
-  if (isLocalRedirectTo(redirectTo) || isLocalSiteOAuthOrigin(siteOAuthOrigin ?? "")) {
+  if (
+    isLocalHostname(incoming.hostname) ||
+    isLocalRedirectTo(redirectTo) ||
+    isLocalSiteOAuthOrigin(siteOAuthOrigin ?? "")
+  ) {
     return developmentConvexSiteUrl();
   }
   if (isStagingRedirectTo(redirectTo)) {

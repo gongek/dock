@@ -124,6 +124,32 @@ export function resolveLoginReturnToSubtitle(returnTo: string): string {
     return LOGIN_RETURN_TO_SUBTITLES.sites;
   }
 
+  if (
+    path === "/onboarding/sites/link" ||
+    path.startsWith("/onboarding/sites/link/") ||
+    path === "/subdomain/onboarding/sites/link" ||
+    path.startsWith("/subdomain/onboarding/sites/link/") ||
+    path === "/onboarding/sites/login" ||
+    path.startsWith("/onboarding/sites/login/") ||
+    path === "/subdomain/onboarding/sites/login" ||
+    path.startsWith("/subdomain/onboarding/sites/login/")
+  ) {
+    return "To connect Meridian and choose a bot.";
+  }
+
+  if (
+    path === "/onboarding/sites/config" ||
+    path.startsWith("/onboarding/sites/config/") ||
+    path === "/subdomain/onboarding/sites/config" ||
+    path.startsWith("/subdomain/onboarding/sites/config/")
+  ) {
+    return "To finish setting up your site.";
+  }
+
+  if (path.endsWith("/sites/login") && path.includes("onboarding")) {
+    return LOGIN_RETURN_TO_SUBTITLES.signup;
+  }
+
   if (path === "/dashboard") {
     return LOGIN_RETURN_TO_SUBTITLES.dashboard;
   }
