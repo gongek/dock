@@ -1,12 +1,14 @@
+"use node";
+
 import { v } from "convex/values";
 import { internal } from "../_generated/api";
 import { action } from "../_generated/server";
+import { ensureMeridianAccessToken } from "./ensureAccessToken";
 import { normalizeSiteSlug } from "../lib/siteValidators";
 import type { MeridianBotSummary } from "./types";
-import {
-  resolveMeridianUserPlan,
-  type MeridianUserinfoBot,
-} from "./userinfo";
+import { resolveMeridianUserPlan } from "./planResolve";
+import type { MeridianUserinfoBot } from "./userinfo";
+import { attachLinkedGuildToBotSummaries } from "./guildMetadata";
 
 function botLabelFromMeridianBot(bot: MeridianUserinfoBot): string | null {
   if (typeof bot.label === "string") {
@@ -95,8 +97,23 @@ export const listBotsForUser = action({
     }
 
     try {
+      const accessToken = await ensureMeridianAccessToken(ctx, {
+        userId: authContext.userId,
+        accessToken: authContext.accessToken,
+        refreshToken: authContext.refreshToken,
+        expiresAt: authContext.expiresAt,
+      });
+      if (!accessToken) {
+        return {
+          meridianConnected: true,
+          bots: [],
+          error:
+            "Meridian access token is missing. Sign in with Meridian again to refresh access.",
+        };
+      }
+
       const { plan: meridianPlan, isMeridianStaff, userinfo } =
-        await resolveMeridianUserPlan(authContext.accessToken);
+        await resolveMeridianUserPlan(accessToken);
       if (authContext.userId) {
         await ctx.runMutation(internal.meridian.planSync.syncOwnerPlanForUser, {
           userId: authContext.userId,
@@ -105,7 +122,11 @@ export const listBotsForUser = action({
         });
       }
 
-      const bots = mapMeridianUserinfoBots(userinfo.bots);
+      const bots = attachLinkedGuildToBotSummaries(
+        mapMeridianUserinfoBots(userinfo.bots),
+        userinfo.guilds,
+        userinfo.bots,
+      );
       return {
         meridianConnected: true,
         bots,
