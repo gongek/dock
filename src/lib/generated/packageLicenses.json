@@ -1,0 +1,995 @@
+{
+  "generatedAt": "2026-09-17",
+  "sections": [
+    {
+      "id": "dock",
+      "title": "Dock (dock.surf)",
+      "packages": [
+        {
+          "name": "@auth/core",
+          "version": "0.41.1",
+          "license": "ISC",
+          "url": "https://www.npmjs.com/package/@auth/core/v/0.41.1"
+        },
+        {
+          "name": "@aws-sdk/checksums",
+          "version": "3.1001.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/checksums/v/3.1001.0"
+        },
+        {
+          "name": "@aws-sdk/client-s3",
+          "version": "3.1132.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/client-s3/v/3.1132.0"
+        },
+        {
+          "name": "@aws-sdk/core",
+          "version": "3.978.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/core/v/3.978.0"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-env",
+          "version": "3.972.71",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-env/v/3.972.71"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-http",
+          "version": "3.972.73",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-http/v/3.972.73"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-ini",
+          "version": "3.973.16",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-ini/v/3.973.16"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-login",
+          "version": "3.972.78",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-login/v/3.972.78"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-node",
+          "version": "3.972.83",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-node/v/3.972.83"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-process",
+          "version": "3.972.71",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-process/v/3.972.71"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-sso",
+          "version": "3.973.15",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-sso/v/3.973.15"
+        },
+        {
+          "name": "@aws-sdk/credential-provider-web-identity",
+          "version": "3.972.77",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/credential-provider-web-identity/v/3.972.77"
+        },
+        {
+          "name": "@aws-sdk/middleware-sdk-s3",
+          "version": "3.972.76",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/middleware-sdk-s3/v/3.972.76"
+        },
+        {
+          "name": "@aws-sdk/nested-clients",
+          "version": "3.997.45",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/nested-clients/v/3.997.45"
+        },
+        {
+          "name": "@aws-sdk/signature-v4-multi-region",
+          "version": "3.996.46",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/signature-v4-multi-region/v/3.996.46"
+        },
+        {
+          "name": "@aws-sdk/token-providers",
+          "version": "3.1129.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/token-providers/v/3.1129.0"
+        },
+        {
+          "name": "@aws-sdk/types",
+          "version": "3.974.5",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/types/v/3.974.5"
+        },
+        {
+          "name": "@aws-sdk/xml-builder",
+          "version": "3.972.40",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws-sdk/xml-builder/v/3.972.40"
+        },
+        {
+          "name": "@aws/lambda-invoke-store",
+          "version": "0.3.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@aws/lambda-invoke-store/v/0.3.0"
+        },
+        {
+          "name": "@babel/runtime",
+          "version": "7.29.7",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@babel/runtime/v/7.29.7"
+        },
+        {
+          "name": "@convex-dev/auth",
+          "version": "0.0.95",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@convex-dev/auth/v/0.0.95"
+        },
+        {
+          "name": "@dnd-kit/accessibility",
+          "version": "3.1.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@dnd-kit/accessibility/v/3.1.1"
+        },
+        {
+          "name": "@dnd-kit/core",
+          "version": "6.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@dnd-kit/core/v/6.3.1"
+        },
+        {
+          "name": "@dnd-kit/sortable",
+          "version": "10.0.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@dnd-kit/sortable/v/10.0.0"
+        },
+        {
+          "name": "@dnd-kit/utilities",
+          "version": "3.2.2",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@dnd-kit/utilities/v/3.2.2"
+        },
+        {
+          "name": "@emnapi/runtime",
+          "version": "1.11.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@emnapi/runtime/v/1.11.3"
+        },
+        {
+          "name": "@esbuild/aix-ppc64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/aix-ppc64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/android-arm",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/android-arm/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/android-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/android-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/android-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/android-x64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/darwin-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/darwin-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/darwin-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/darwin-x64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/freebsd-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/freebsd-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/freebsd-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/freebsd-x64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-arm",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-arm/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-ia32",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-ia32/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-loong64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-loong64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-mips64el",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-mips64el/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-ppc64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-ppc64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-riscv64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-riscv64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-s390x",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-s390x/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/linux-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/linux-x64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/netbsd-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/netbsd-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/netbsd-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/netbsd-x64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/openbsd-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/openbsd-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/openbsd-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/openbsd-x64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/openharmony-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/openharmony-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/sunos-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/sunos-x64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/win32-arm64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/win32-arm64/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/win32-ia32",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/win32-ia32/v/0.27.0"
+        },
+        {
+          "name": "@esbuild/win32-x64",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@esbuild/win32-x64/v/0.27.0"
+        },
+        {
+          "name": "@gsap/react",
+          "version": "2.1.2",
+          "license": "SEE LICENSE AT https://gsap.com/standard-license",
+          "url": "https://www.npmjs.com/package/@gsap/react/v/2.1.2"
+        },
+        {
+          "name": "@img/colour",
+          "version": "1.1.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@img/colour/v/1.1.0"
+        },
+        {
+          "name": "@img/sharp-darwin-arm64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-darwin-arm64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-darwin-x64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-darwin-x64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-freebsd-wasm32",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-freebsd-wasm32/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-libvips-darwin-arm64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-darwin-arm64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-darwin-x64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-darwin-x64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linux-arm",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linux-arm/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linux-arm64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linux-arm64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linux-ppc64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linux-ppc64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linux-riscv64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linux-riscv64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linux-s390x",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linux-s390x/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linux-x64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linux-x64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linuxmusl-arm64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linuxmusl-arm64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-libvips-linuxmusl-x64",
+          "version": "1.3.2",
+          "license": "LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-libvips-linuxmusl-x64/v/1.3.2"
+        },
+        {
+          "name": "@img/sharp-linux-arm",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linux-arm/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-linux-arm64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linux-arm64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-linux-ppc64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linux-ppc64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-linux-riscv64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linux-riscv64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-linux-s390x",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linux-s390x/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-linux-x64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linux-x64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-linuxmusl-arm64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linuxmusl-arm64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-linuxmusl-x64",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-linuxmusl-x64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-wasm32",
+          "version": "0.35.3",
+          "license": "Apache-2.0 AND LGPL-3.0-or-later AND MIT",
+          "url": "https://www.npmjs.com/package/@img/sharp-wasm32/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-webcontainers-wasm32",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@img/sharp-webcontainers-wasm32/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-win32-arm64",
+          "version": "0.35.3",
+          "license": "Apache-2.0 AND LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-win32-arm64/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-win32-ia32",
+          "version": "0.35.3",
+          "license": "Apache-2.0 AND LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-win32-ia32/v/0.35.3"
+        },
+        {
+          "name": "@img/sharp-win32-x64",
+          "version": "0.35.3",
+          "license": "Apache-2.0 AND LGPL-3.0-or-later",
+          "url": "https://www.npmjs.com/package/@img/sharp-win32-x64/v/0.35.3"
+        },
+        {
+          "name": "@next/env",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/env/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-darwin-arm64",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-darwin-arm64/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-darwin-x64",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-darwin-x64/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-linux-arm64-gnu",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-linux-arm64-gnu/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-linux-arm64-musl",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-linux-arm64-musl/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-linux-x64-gnu",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-linux-x64-gnu/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-linux-x64-musl",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-linux-x64-musl/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-win32-arm64-msvc",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-win32-arm64-msvc/v/16.3.1"
+        },
+        {
+          "name": "@next/swc-win32-x64-msvc",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@next/swc-win32-x64-msvc/v/16.3.1"
+        },
+        {
+          "name": "@oslojs/asn1",
+          "version": "1.0.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@oslojs/asn1/v/1.0.0"
+        },
+        {
+          "name": "@oslojs/binary",
+          "version": "1.0.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@oslojs/binary/v/1.0.0"
+        },
+        {
+          "name": "@oslojs/crypto",
+          "version": "1.0.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@oslojs/crypto/v/1.0.1"
+        },
+        {
+          "name": "@oslojs/encoding",
+          "version": "1.1.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@oslojs/encoding/v/1.1.0"
+        },
+        {
+          "name": "@panva/hkdf",
+          "version": "1.2.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/@panva/hkdf/v/1.2.1"
+        },
+        {
+          "name": "@paper-design/shaders",
+          "version": "0.0.80",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@paper-design/shaders/v/0.0.80"
+        },
+        {
+          "name": "@paper-design/shaders-react",
+          "version": "0.0.80",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@paper-design/shaders-react/v/0.0.80"
+        },
+        {
+          "name": "@smithy/core",
+          "version": "3.34.1",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@smithy/core/v/3.34.1"
+        },
+        {
+          "name": "@smithy/credential-provider-imds",
+          "version": "4.5.2",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@smithy/credential-provider-imds/v/4.5.2"
+        },
+        {
+          "name": "@smithy/fetch-http-handler",
+          "version": "5.8.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@smithy/fetch-http-handler/v/5.8.0"
+        },
+        {
+          "name": "@smithy/node-http-handler",
+          "version": "4.12.1",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@smithy/node-http-handler/v/4.12.1"
+        },
+        {
+          "name": "@smithy/signature-v4",
+          "version": "5.7.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@smithy/signature-v4/v/5.7.3"
+        },
+        {
+          "name": "@smithy/types",
+          "version": "4.18.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@smithy/types/v/4.18.0"
+        },
+        {
+          "name": "@swc/helpers",
+          "version": "0.5.23",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/@swc/helpers/v/0.5.23"
+        },
+        {
+          "name": "@webcomponents/webcomponentsjs",
+          "version": "2.8.0",
+          "license": "BSD-3-Clause",
+          "url": "https://www.npmjs.com/package/@webcomponents/webcomponentsjs/v/2.8.0"
+        },
+        {
+          "name": "baseline-browser-mapping",
+          "version": "2.11.14",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/baseline-browser-mapping/v/2.11.14"
+        },
+        {
+          "name": "bowser",
+          "version": "2.14.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/bowser/v/2.14.1"
+        },
+        {
+          "name": "boxicons",
+          "version": "2.1.4",
+          "license": "(CC-BY-4.0 OR OFL-1.1 OR MIT)",
+          "url": "https://www.npmjs.com/package/boxicons/v/2.1.4"
+        },
+        {
+          "name": "caniuse-lite",
+          "version": "1.0.30001809",
+          "license": "CC-BY-4.0",
+          "url": "https://www.npmjs.com/package/caniuse-lite/v/1.0.30001809"
+        },
+        {
+          "name": "client-only",
+          "version": "0.0.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/client-only/v/0.0.1"
+        },
+        {
+          "name": "convex",
+          "version": "1.44.0",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/convex/v/1.44.0"
+        },
+        {
+          "name": "cookie",
+          "version": "1.1.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/cookie/v/1.1.1"
+        },
+        {
+          "name": "detect-hover",
+          "version": "1.0.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/detect-hover/v/1.0.3"
+        },
+        {
+          "name": "detect-it",
+          "version": "3.0.7",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/detect-it/v/3.0.7"
+        },
+        {
+          "name": "detect-libc",
+          "version": "2.1.2",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/detect-libc/v/2.1.2"
+        },
+        {
+          "name": "detect-passive-events",
+          "version": "1.0.5",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/detect-passive-events/v/1.0.5"
+        },
+        {
+          "name": "detect-pointer",
+          "version": "1.0.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/detect-pointer/v/1.0.3"
+        },
+        {
+          "name": "detect-touch-events",
+          "version": "2.0.2",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/detect-touch-events/v/2.0.2"
+        },
+        {
+          "name": "esbuild",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/esbuild/v/0.27.0"
+        },
+        {
+          "name": "gsap",
+          "version": "3.15.0",
+          "license": "Standard 'no charge' license: https://gsap.com/standard-license.",
+          "url": "https://www.npmjs.com/package/gsap/v/3.15.0"
+        },
+        {
+          "name": "history",
+          "version": "4.10.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/history/v/4.10.1"
+        },
+        {
+          "name": "hoist-non-react-statics",
+          "version": "2.5.5",
+          "license": "BSD-3-Clause",
+          "url": "https://www.npmjs.com/package/hoist-non-react-statics/v/2.5.5"
+        },
+        {
+          "name": "invariant",
+          "version": "2.2.4",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/invariant/v/2.2.4"
+        },
+        {
+          "name": "is-network-error",
+          "version": "1.3.2",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/is-network-error/v/1.3.2"
+        },
+        {
+          "name": "isarray",
+          "version": "2.0.5",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/isarray/v/2.0.5"
+        },
+        {
+          "name": "jose",
+          "version": "5.10.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/jose/v/5.10.0"
+        },
+        {
+          "name": "jose",
+          "version": "6.2.9",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/jose/v/6.2.9"
+        },
+        {
+          "name": "js-tokens",
+          "version": "4.0.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/js-tokens/v/4.0.0"
+        },
+        {
+          "name": "jwt-decode",
+          "version": "4.0.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/jwt-decode/v/4.0.0"
+        },
+        {
+          "name": "loose-envify",
+          "version": "1.4.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/loose-envify/v/1.4.0"
+        },
+        {
+          "name": "lucia",
+          "version": "3.2.2",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/lucia/v/3.2.2"
+        },
+        {
+          "name": "nanoid",
+          "version": "3.3.19",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/nanoid/v/3.3.19"
+        },
+        {
+          "name": "nanoid",
+          "version": "6.0.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/nanoid/v/6.0.1"
+        },
+        {
+          "name": "next",
+          "version": "16.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/next/v/16.3.1"
+        },
+        {
+          "name": "oauth4webapi",
+          "version": "3.8.7",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/oauth4webapi/v/3.8.7"
+        },
+        {
+          "name": "object-assign",
+          "version": "4.1.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/object-assign/v/4.1.1"
+        },
+        {
+          "name": "path-to-regexp",
+          "version": "1.9.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/path-to-regexp/v/1.9.0"
+        },
+        {
+          "name": "path-to-regexp",
+          "version": "6.3.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/path-to-regexp/v/6.3.0"
+        },
+        {
+          "name": "picocolors",
+          "version": "1.1.1",
+          "license": "ISC",
+          "url": "https://www.npmjs.com/package/picocolors/v/1.1.1"
+        },
+        {
+          "name": "postcss",
+          "version": "8.5.23",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/postcss/v/8.5.23"
+        },
+        {
+          "name": "preact",
+          "version": "10.24.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/preact/v/10.24.3"
+        },
+        {
+          "name": "preact-render-to-string",
+          "version": "6.5.11",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/preact-render-to-string/v/6.5.11"
+        },
+        {
+          "name": "prettier",
+          "version": "3.9.6",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/prettier/v/3.9.6"
+        },
+        {
+          "name": "prop-types",
+          "version": "15.8.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/prop-types/v/15.8.1"
+        },
+        {
+          "name": "react",
+          "version": "16.14.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react/v/16.14.0"
+        },
+        {
+          "name": "react",
+          "version": "19.2.8",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react/v/19.2.8"
+        },
+        {
+          "name": "react-dom",
+          "version": "16.14.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react-dom/v/16.14.0"
+        },
+        {
+          "name": "react-dom",
+          "version": "19.2.8",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react-dom/v/19.2.8"
+        },
+        {
+          "name": "react-interactive",
+          "version": "0.8.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react-interactive/v/0.8.3"
+        },
+        {
+          "name": "react-is",
+          "version": "16.13.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react-is/v/16.13.1"
+        },
+        {
+          "name": "react-router",
+          "version": "4.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react-router/v/4.3.1"
+        },
+        {
+          "name": "react-router-dom",
+          "version": "4.3.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/react-router-dom/v/4.3.1"
+        },
+        {
+          "name": "resolve-pathname",
+          "version": "3.0.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/resolve-pathname/v/3.0.0"
+        },
+        {
+          "name": "scheduler",
+          "version": "0.27.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/scheduler/v/0.27.0"
+        },
+        {
+          "name": "semver",
+          "version": "7.8.5",
+          "license": "ISC",
+          "url": "https://www.npmjs.com/package/semver/v/7.8.5"
+        },
+        {
+          "name": "server-only",
+          "version": "0.0.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/server-only/v/0.0.1"
+        },
+        {
+          "name": "sharp",
+          "version": "0.35.3",
+          "license": "Apache-2.0",
+          "url": "https://www.npmjs.com/package/sharp/v/0.35.3"
+        },
+        {
+          "name": "source-map-js",
+          "version": "1.2.1",
+          "license": "BSD-3-Clause",
+          "url": "https://www.npmjs.com/package/source-map-js/v/1.2.1"
+        },
+        {
+          "name": "styled-jsx",
+          "version": "5.1.6",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/styled-jsx/v/5.1.6"
+        },
+        {
+          "name": "tiny-invariant",
+          "version": "1.3.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/tiny-invariant/v/1.3.3"
+        },
+        {
+          "name": "tiny-warning",
+          "version": "1.0.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/tiny-warning/v/1.0.3"
+        },
+        {
+          "name": "tslib",
+          "version": "2.8.1",
+          "license": "0BSD",
+          "url": "https://www.npmjs.com/package/tslib/v/2.8.1"
+        },
+        {
+          "name": "value-equal",
+          "version": "1.0.1",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/value-equal/v/1.0.1"
+        },
+        {
+          "name": "warning",
+          "version": "4.0.3",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/warning/v/4.0.3"
+        },
+        {
+          "name": "ws",
+          "version": "8.21.0",
+          "license": "MIT",
+          "url": "https://www.npmjs.com/package/ws/v/8.21.0"
+        }
+      ]
+    }
+  ]
+}
