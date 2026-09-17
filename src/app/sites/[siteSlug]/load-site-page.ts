@@ -47,6 +47,7 @@ export type PageAccessDenied = {
 export type PublicSitePageLoadResult = {
   payload: FunctionReturnType<typeof api.sites.getPublishedSiteBySlug> | null;
   caseRecords: FunctionReturnType<typeof api.siteCases.listCaseRecords> | undefined;
+  templateVars: Record<string, string> | undefined;
   pathname: string;
   discordVisitor: Awaited<ReturnType<typeof loadDiscordVisitor>>;
   publicBasePath: string;
@@ -118,6 +119,7 @@ export async function loadPublicSitePage(
     return {
       payload: null,
       caseRecords: undefined,
+      templateVars: undefined,
       pathname,
       discordVisitor: undefined,
       publicBasePath,
@@ -152,12 +154,14 @@ export async function loadPublicSitePage(
       }
 
       const discordVisitor = await loadDiscordVisitor();
+      const discordContext = buildDiscordTemplateContext(discordVisitor);
 
       const presentation = accessContext.presentation;
 
       return {
         payload: null,
         caseRecords: undefined,
+        templateVars: undefined,
         pathname,
         discordVisitor,
         publicBasePath,
@@ -180,7 +184,7 @@ export async function loadPublicSitePage(
             mode: "public",
             resolveVariables: true,
             pages: presentation.navPages,
-            ...buildDiscordTemplateContext(discordVisitor),
+            ...(discordContext ? { discord: discordContext, me: discordContext } : {}),
           },
           showDockBranding: presentation.showDockBranding,
           faviconUrl: presentation.faviconUrl,
@@ -198,11 +202,25 @@ export async function loadPublicSitePage(
         siteId: payload.site._id,
       })
     : undefined;
+  let templateVars: Record<string, string> | undefined;
+  if (payload?.site._id) {
+    try {
+      templateVars = await fetchAction(
+        api.meridian.integrationActions.ensureTemplateVarsForSite,
+        { siteId: payload.site._id },
+      );
+    } catch {
+      templateVars = await fetchQuery(api.siteVariables.getTemplateVarsForSite, {
+        siteId: payload.site._id,
+      });
+    }
+  }
   const discordVisitor = await loadDiscordVisitor();
 
   return {
     payload,
     caseRecords,
+    templateVars,
     pathname,
     discordVisitor,
     publicBasePath,

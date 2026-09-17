@@ -36,6 +36,7 @@ export async function generateMetadata({
     loaded.caseRecords,
     buildDiscordTemplateContext(loaded.discordVisitor),
     false,
+    loaded.templateVars,
   );
   return {
     title: { absolute: meta.title },
@@ -75,6 +76,7 @@ export default async function PublishedSiteRoute({
       pathname={pathname}
       payload={loaded.payload}
       caseRecords={loaded.caseRecords}
+      templateVars={loaded.templateVars}
       discordVisitor={loaded.discordVisitor}
       publicBasePath={loaded.publicBasePath}
     />
