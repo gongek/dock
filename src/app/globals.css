@@ -547,6 +547,108 @@ button:disabled {
     border-color 180ms ease;
 }
 
+.dashboard-status-chip {
+  display: inline-flex;
+  shrink: 0;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+
+.dashboard-status-chip--published {
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  background: rgba(56, 189, 248, 0.1);
+  color: rgb(125 211 252);
+}
+
+.dashboard-status-chip--draft {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgb(161 161 170);
+}
+
+.dashboard-site-list {
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dashboard-site-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-site-row:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 640px) {
+  .dashboard-site-row {
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+  }
+}
+
+.dashboard-site-action {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: rgb(161 161 170);
+  transition: color 150ms ease;
+}
+
+.dashboard-site-action:hover {
+  color: rgb(244 244 245);
+}
+
+.dashboard-bot-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .dashboard-bot-stat-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-bot-stat-strip {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+.dashboard-bot-stat {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.75rem 0.875rem;
+}
+
+.dashboard-bot-stat-label {
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  color: rgb(113 113 122);
+}
+
+.dashboard-bot-stat-value {
+  margin-top: 0.25rem;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: rgb(244 244 245);
+}
+
 .landing-atmosphere {
   pointer-events: none;
   position: absolute;
