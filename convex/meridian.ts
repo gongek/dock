@@ -9,6 +9,7 @@ export type MeridianProfile = {
   email?: string;
   discordId?: string;
   botCount?: number;
+  isMeridianStaff?: boolean;
 };
 
 export default function Meridian(
@@ -26,7 +27,8 @@ export default function Meridian(
       url: "https://meridian.surf/auth/consent",
       params: {
         response_type: "code",
-        scope: "user.identify offline_access",
+        scope:
+          "user.identify isMeridianStaff bots.read billing.read offline_access",
         redirect_uri: MERIDIAN_CALLBACK_URL,
         consent: "skip",
       },
@@ -39,6 +41,7 @@ export default function Meridian(
         name: profile.name ?? "Meridian user",
         email: profile.email,
         meridianId: profile.sub,
+        discordId: profile.discordId,
       };
     },
     [customFetch]: meridianFetch,
