@@ -9,6 +9,8 @@
     "start": "next start",
     "test:page-access": "node --test convex/lib/pageAccessCore.test.ts",
     "test:custom-domains": "node --test convex/lib/customDomainValidators.test.ts convex/lib/customDomainsConfig.test.ts",
+    "test:meridian": "npx tsx --test convex/meridian/*.test.ts",
+    "test:variables": "npx tsx --test src/lib/variables/template-expression.test.ts",
     "generate:logo-raster": "npx sharp-cli -i public/dock-logo.svg -o public/dock-logo-raster.png resize 1024 1024",
     "generate:logo-gem-smoke": "node scripts/generate-gem-smoke-logo.mjs",
     "postinstall": "node scripts/ensure-logo-assets.mjs"
