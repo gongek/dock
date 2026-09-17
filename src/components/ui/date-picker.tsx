@@ -554,7 +554,7 @@ export function DateTimePicker({
                 {WEEKDAYS.map((day) => (
                   <span
                     key={day}
-                    className="pb-1 text-center text-[10px] font-medium uppercase tracking-wide text-zinc-500"
+                    className="pb-1 text-center text-[10px] font-medium tracking-wide text-zinc-500"
                   >
                     {day}
                   </span>
