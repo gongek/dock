@@ -885,7 +885,7 @@ const badge: BlockRegistryEntry = {
             : "border-zinc-700 bg-zinc-900 text-zinc-300";
     return (
       <span
-        className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide ${className}`}
+        className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-medium tracking-wide ${className}`}
       >
         <Tpl value={props.text} context={context} fallback="Badge" />
       </span>
@@ -1050,7 +1050,7 @@ const codeBlock: BlockRegistryEntry = {
     return (
       <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
         {language ? (
-          <div className="border-b border-zinc-800 px-4 py-2 text-[10px] uppercase tracking-wider text-zinc-500">
+          <div className="border-b border-zinc-800 px-4 py-2 text-[10px] tracking-wide text-zinc-500">
             {language}
           </div>
         ) : null}
@@ -1810,12 +1810,12 @@ function CountdownTimer({
             <p className="text-xl font-medium tabular-nums text-zinc-100">
               {String(value).padStart(2, "0")}
             </p>
-            <p className="text-[10px] uppercase tracking-wide text-zinc-500">{label}</p>
+            <p className="text-[10px] tracking-wide text-zinc-500">{label}</p>
           </div>
         ))}
       </div>
       {countingUp ? (
-        <p className="text-[10px] uppercase tracking-wide text-zinc-500">Elapsed</p>
+        <p className="text-[10px] tracking-wide text-zinc-500">Elapsed</p>
       ) : null}
     </div>
   );
