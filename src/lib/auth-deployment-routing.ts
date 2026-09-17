@@ -1,4 +1,8 @@
 import { CONVEX_DEV_SITE_URL } from "./convex-site-urls";
+import {
+  isLocalSiteOAuthOrigin,
+  parseSiteDiscordOAuthState,
+} from "./site-discord-oauth-state";
 
 export const DOCK_STAGING_URL = "https://dock.citrum.app";
 
@@ -57,18 +61,28 @@ function developmentConvexSiteUrl(): string {
   return url.replace(/\/$/, "");
 }
 
+function siteOAuthOriginFromRequest(request: Request): string | null {
+  const state = new URL(request.url).searchParams.get("state");
+  if (!state) {
+    return null;
+  }
+  const parsed = parseSiteDiscordOAuthState(state);
+  return parsed?.origin ?? null;
+}
+
 export function resolveConvexSiteUrl(
   request: Request,
   provider?: string,
 ): string {
   const incoming = new URL(request.url);
   let redirectTo = incoming.searchParams.get("redirectTo");
+  const siteOAuthOrigin = siteOAuthOriginFromRequest(request);
 
   if (!redirectTo && provider) {
     redirectTo = readCookie(request, redirectToCookieName(provider));
   }
 
-  if (isLocalRedirectTo(redirectTo)) {
+  if (isLocalRedirectTo(redirectTo) || isLocalSiteOAuthOrigin(siteOAuthOrigin ?? "")) {
     return developmentConvexSiteUrl();
   }
   if (isStagingRedirectTo(redirectTo)) {

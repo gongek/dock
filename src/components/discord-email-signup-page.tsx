@@ -6,6 +6,7 @@ import { FormEvent, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { DockLogo } from "@/components/dock-logo";
 import { SiteFooter } from "@/components/site-footer";
+import { userFacingError } from "@/lib/user-facing-error";
 
 export function DiscordEmailSignupPage() {
   const searchParams = useSearchParams();
@@ -31,9 +32,7 @@ export function DiscordEmailSignupPage() {
       window.location.assign(redirectUrl.toString());
     } catch (caught) {
       setError(
-        caught instanceof Error
-          ? caught.message
-          : "Could not finish creating your account.",
+        userFacingError(caught, "Could not finish creating your account."),
       );
       setPending(false);
     }
