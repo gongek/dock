@@ -1,6 +1,7 @@
 import { customFetch } from "@auth/core";
 import type { OAuthConfig, OAuthUserConfig } from "@auth/core/providers";
 import { MERIDIAN_CALLBACK_URL, meridianFetch } from "./oauth";
+import { DOCK_MERIDIAN_OAUTH_SCOPES_CORE } from "./meridian/scopes";
 
 export type MeridianProfile = {
   sub: string;
@@ -27,10 +28,8 @@ export default function Meridian(
       url: "https://meridian.surf/auth/consent",
       params: {
         response_type: "code",
-        scope:
-          "user.identify isMeridianStaff bots.read billing.read offline_access",
+        scope: DOCK_MERIDIAN_OAUTH_SCOPES_CORE,
         redirect_uri: MERIDIAN_CALLBACK_URL,
-        consent: "skip",
       },
     },
     token: "https://meridian.surf/api/oauth/token",

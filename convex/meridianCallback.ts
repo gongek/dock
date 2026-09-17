@@ -13,9 +13,9 @@ import { callUserOAuth } from "../node_modules/@convex-dev/auth/dist/server/impl
 import { logError } from "../node_modules/@convex-dev/auth/dist/server/implementation/utils.js";
 import {
   readMeridianStaffStatus,
-  resolveMeridianUserPlan,
   type MeridianUserinfoPayload,
 } from "./meridian/userinfo";
+import { resolveMeridianUserPlan } from "./meridian/planResolve";
 import { sanitizeUserProfile } from "./userProfile";
 
 const providerId = "meridian";

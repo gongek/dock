@@ -1,6 +1,6 @@
 export const DOCK_SITE_URL = "https://dock.surf";
 export const DOCK_STAGING_URL = "https://dock.citrum.app";
-export const LOCAL_SITE_URL = "http://localhost:3000";
+export const LOCAL_SITE_URL = "http://localhost:3001";
 export const DOCK_API_URL = "https://api.dock.surf";
 export const MERIDIAN_CALLBACK_URL = `${DOCK_API_URL}/callback/meridian`;
 export const DISCORD_CALLBACK_URL = `${DOCK_API_URL}/callback/discord`;
