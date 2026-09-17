@@ -11,7 +11,7 @@ export function LandingProductPreview() {
       </div>
       <div className="space-y-4 p-4 sm:p-5">
         <div>
-          <p className="text-[11px] tracking-wide text-zinc-500 uppercase">Staff</p>
+          <p className="text-[11px] tracking-wide text-zinc-500">Staff</p>
           <h3 className="mt-1 text-lg font-medium tracking-tight text-zinc-100">
             Appeals
           </h3>
