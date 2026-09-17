@@ -2,11 +2,11 @@
 
 import type { ReactNode } from "react";
 import { useFloatingTooltip } from "@/components/ui/floating-tooltip";
-import { TEMPLATE_VAR_RE, variableDisplayPath } from "./format";
+import { findTemplateVariableSpans } from "./format";
 import { TEMPLATE_VAR_CHIP_CLASSES } from "./template-variable-html";
 import { resolveTemplate, type TemplateContext } from "./resolve";
 
-export { TEMPLATE_VAR_RE };
+export { findTemplateVariableSpans, TEMPLATE_VAR_RE } from "./format";
 
 export type TemplateTextContext = TemplateContext & {
   resolveVariables?: boolean;
@@ -16,7 +16,7 @@ export type TemplateToken =
   | { type: "text"; content: string }
   | { type: "var"; raw: string };
 
-export { variableDisplayPath };
+export { variableDisplayPath } from "./format";
 
 function VariableIcon({ className }: { className?: string }) {
   return (
@@ -87,15 +87,18 @@ export function renderTemplateString(
 
 export function splitTemplateTokens(template: string): TemplateToken[] {
   const tokens: TemplateToken[] = [];
+  const spans = findTemplateVariableSpans(template);
+  if (spans.length === 0) {
+    if (template) tokens.push({ type: "text", content: template });
+    return tokens;
+  }
   let lastIndex = 0;
-  const re = new RegExp(TEMPLATE_VAR_RE.source, "g");
-  for (const match of template.matchAll(re)) {
-    const index = match.index ?? 0;
-    if (index > lastIndex) {
-      tokens.push({ type: "text", content: template.slice(lastIndex, index) });
+  for (const span of spans) {
+    if (span.start > lastIndex) {
+      tokens.push({ type: "text", content: template.slice(lastIndex, span.start) });
     }
-    tokens.push({ type: "var", raw: match[0] });
-    lastIndex = index + match[0].length;
+    tokens.push({ type: "var", raw: span.raw });
+    lastIndex = span.end;
   }
   if (lastIndex < template.length) {
     tokens.push({ type: "text", content: template.slice(lastIndex) });

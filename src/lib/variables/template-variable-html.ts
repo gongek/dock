@@ -1,4 +1,4 @@
-import { TEMPLATE_VAR_RE } from "./format";
+import { findTemplateVariableSpans } from "./format";
 
 export const TEMPLATE_VAR_CHIP_CLASSES =
   "template-var-chip mx-0.5 inline-flex max-w-full items-center gap-1 rounded-md border border-zinc-600/40 bg-zinc-800/70 px-1.5 py-0.5 align-baseline text-[0.85em] leading-none text-zinc-300";
@@ -34,15 +34,17 @@ export function templateVariableChipHtml(raw: string): string {
 
 export function decorateTemplateVariablesToHtml(text: string): string {
   const tokens: Array<{ type: "text"; content: string } | { type: "var"; raw: string }> = [];
+  const spans = findTemplateVariableSpans(text);
+  if (spans.length === 0) {
+    return escapeHtml(text);
+  }
   let lastIndex = 0;
-  const re = new RegExp(TEMPLATE_VAR_RE.source, "g");
-  for (const match of text.matchAll(re)) {
-    const index = match.index ?? 0;
-    if (index > lastIndex) {
-      tokens.push({ type: "text", content: text.slice(lastIndex, index) });
+  for (const span of spans) {
+    if (span.start > lastIndex) {
+      tokens.push({ type: "text", content: text.slice(lastIndex, span.start) });
     }
-    tokens.push({ type: "var", raw: match[0] });
-    lastIndex = index + match[0].length;
+    tokens.push({ type: "var", raw: span.raw });
+    lastIndex = span.end;
   }
   if (lastIndex < text.length) {
     tokens.push({ type: "text", content: text.slice(lastIndex) });
