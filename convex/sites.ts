@@ -15,6 +15,7 @@ import {
   DEFAULT_CASE_URL_PATTERN,
   DEFAULT_SITE_THEME,
   normalizeSiteSlug,
+  isReservedSiteSlug,
 } from "./lib/siteValidators";
 import { resolvePublishedNavbar, type PublishedSnapshot } from "./lib/siteTypes";
 import {
@@ -219,6 +220,7 @@ export const createBotSite = mutation({
     const meridianBotId = args.meridianBotId.trim();
     const slug = normalizeSiteSlug(meridianBotId);
     if (!slug) throw new Error("Invalid Meridian bot id.");
+    if (isReservedSiteSlug(slug)) throw new Error("That subdomain is reserved.");
 
     const existingBotSite = await ctx.db
       .query("sites")
@@ -307,6 +309,7 @@ export const createCustomSite = mutation({
 
     const slug = normalizeSiteSlug(args.slug);
     if (!slug) throw new Error("Invalid site slug.");
+    if (isReservedSiteSlug(slug)) throw new Error("That subdomain is reserved.");
 
     const existing = await ctx.db
       .query("sites")

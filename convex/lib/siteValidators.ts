@@ -1,6 +1,12 @@
 const BOT_HANDLE_RE = /^[a-z0-9](?:[a-z0-9-]{0,30}[a-z0-9])?$/;
 const SITE_SLUG_RE = /^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/;
 
+export const RESERVED_SITE_SLUGS = new Set(["onboarding"]);
+
+export function isReservedSiteSlug(slug: string): boolean {
+  return RESERVED_SITE_SLUGS.has(slug.trim().toLowerCase());
+}
+
 export function normalizeSiteSlug(raw: string): string | null {
   const slug = raw.trim().toLowerCase();
   if (!slug || !SITE_SLUG_RE.test(slug)) return null;

@@ -217,6 +217,7 @@ export default defineSchema({
   siteCaseRecords: defineTable({
     siteId: v.id("sites"),
     meridianBotId: v.string(),
+    meridianCaseId: v.optional(v.string()),
     scope: v.union(v.literal("guild"), v.literal("global")),
     guildKey: v.string(),
     publicSlug: v.string(),
