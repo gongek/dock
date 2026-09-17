@@ -4,7 +4,7 @@ import type { Id } from "../_generated/dataModel";
 import { action, internalMutation, type MutationCtx } from "../_generated/server";
 import { ownerPlanAfterMeridianEntitlements } from "../lib/meridianPlan";
 import { normalizeOwnerPlan, type OwnerPlan } from "../lib/siteLimits";
-import { resolveMeridianUserPlan } from "./userinfo";
+import { resolveMeridianUserPlan } from "./planResolve";
 
 const meridianPlanValidator = v.union(
   v.literal("free"),
