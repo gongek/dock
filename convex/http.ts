@@ -3,6 +3,7 @@ import { httpAction } from "./_generated/server";
 import { auth } from "./auth";
 import { discordOAuthCallback } from "./discordCallback";
 import { meridianOAuthCallback } from "./meridianCallback";
+import { onboardingSelectCallback } from "./onboardingSelectCallback";
 
 const http = httpRouter();
 
@@ -70,5 +71,17 @@ for (const provider of ["meridian", "discord"] as const) {
     handler: createCallbackForwarder(provider),
   });
 }
+
+http.route({
+  path: "/callback/onboarding",
+  method: "GET",
+  handler: onboardingSelectCallback,
+});
+
+http.route({
+  path: "/callback/onboarding",
+  method: "POST",
+  handler: onboardingSelectCallback,
+});
 
 export default http;
