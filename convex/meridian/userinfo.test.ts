@@ -7,3 +7,10 @@ test("readMeridianStaffStatus uses isMeridianStaff from userinfo", () => {
   assert.equal(readMeridianStaffStatus({ isMeridianStaff: false }), false);
   assert.equal(readMeridianStaffStatus({}), false);
 });
+
+test("readMeridianStaffStatus accepts staff.meridianStaff from user.staff.read", () => {
+  assert.equal(
+    readMeridianStaffStatus({ staff: { meridianStaff: true } }),
+    true,
+  );
+});

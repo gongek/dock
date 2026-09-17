@@ -2,10 +2,25 @@ import {
   pickBetterOwnerPlan,
   type OwnerPlan,
 } from "../lib/siteLimits";
+import {
+  MERIDIAN_USERINFO_URL,
+} from "./apiPaths";
 
-export const MERIDIAN_USERINFO_URL = "https://meridian.surf/api/oauth/userinfo";
-export const MERIDIAN_BILLING_SUMMARY_URL =
-  "https://meridian.surf/api/external/v1/billing/summary";
+export type MeridianUserBillingSnapshot = {
+  plan?: string;
+  planLabel?: string;
+  status?: string;
+  currentPeriodStart?: number;
+  currentPeriodEnd?: number;
+  cancelAtPeriodEnd?: boolean;
+  billingInterval?: string;
+  products?: Array<{
+    id?: string;
+    planLabel?: string;
+    status?: string;
+    currentPeriodEnd?: number | null;
+  }>;
+};
 
 export type MeridianUserinfoBot = {
   id?: string;
@@ -16,6 +31,32 @@ export type MeridianUserinfoBot = {
   status?: string;
   plan?: string;
   role?: string;
+  discordId?: string;
+  applicationId?: string;
+  guildCount?: number;
+  serverCount?: number;
+  servers?: number;
+  memberCount?: number;
+  members?: number;
+  totalMemberCount?: number;
+  uptimeMs?: number;
+};
+
+export type MeridianUserinfoFlow = {
+  botId?: string;
+  flowId?: string;
+  kind?: string;
+  type?: string;
+  name?: string;
+  publicCode?: string;
+};
+
+export type MeridianUserinfoGuild = {
+  botId?: string;
+  guildId?: string;
+  name?: string;
+  icon?: string;
+  primary?: boolean;
 };
 
 export type MeridianUserinfoPayload = {
@@ -32,19 +73,20 @@ export type MeridianUserinfoPayload = {
   };
   bots?: MeridianUserinfoBot[];
   botCount?: number;
-};
-
-type MeridianBillingSummaryPayload = {
-  products?: Array<{
-    subscription?: {
-      planLabel?: string;
-    } | null;
-  }>;
+  flows?: MeridianUserinfoFlow[];
+  guilds?: MeridianUserinfoGuild[];
+  billing?: MeridianUserBillingSnapshot;
+  staff?: {
+    meridianStaff?: boolean;
+  };
 };
 
 export function readMeridianStaffStatus(
   payload: MeridianUserinfoPayload,
 ): boolean {
+  if (payload.staff?.meridianStaff === true) {
+    return true;
+  }
   return payload.isMeridianStaff === true;
 }
 
@@ -130,6 +172,16 @@ export function readMeridianUserPlan(
   return best;
 }
 
+export class MeridianUserinfoError extends Error {
+  status: number;
+
+  constructor(status: number, message?: string) {
+    super(message ?? `Meridian userinfo failed (${status}).`);
+    this.name = "MeridianUserinfoError";
+    this.status = status;
+  }
+}
+
 export async function fetchMeridianUserinfo(
   accessToken: string,
 ): Promise<MeridianUserinfoPayload> {
@@ -141,62 +193,12 @@ export async function fetchMeridianUserinfo(
   });
 
   if (!response.ok) {
-    throw new Error(`Meridian userinfo failed (${response.status}).`);
+    throw new MeridianUserinfoError(response.status);
   }
 
-  return (await response.json()) as MeridianUserinfoPayload;
-}
-
-async function fetchMeridianBillingSummary(
-  accessToken: string,
-): Promise<MeridianBillingSummaryPayload | null> {
-  const response = await fetch(MERIDIAN_BILLING_SUMMARY_URL, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      Accept: "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    return null;
+  try {
+    return (await response.json()) as MeridianUserinfoPayload;
+  } catch {
+    throw new MeridianUserinfoError(response.status, "Invalid Meridian userinfo response.");
   }
-
-  return (await response.json()) as MeridianBillingSummaryPayload;
-}
-
-export async function fetchMeridianBillingPlan(
-  accessToken: string,
-): Promise<OwnerPlan | null> {
-  const payload = await fetchMeridianBillingSummary(accessToken);
-  if (!payload) {
-    return null;
-  }
-
-  let best: OwnerPlan | null = null;
-
-  for (const product of payload.products ?? []) {
-    best = pickHigherMeridianPlan(
-      best,
-      normalizeMeridianUserPlan(product.subscription?.planLabel),
-    );
-  }
-
-  return best;
-}
-
-export async function resolveMeridianUserPlan(accessToken: string): Promise<{
-  plan: OwnerPlan | null;
-  isMeridianStaff: boolean;
-  userinfo: MeridianUserinfoPayload;
-}> {
-  const userinfo = await fetchMeridianUserinfo(accessToken);
-  let plan = readMeridianUserPlan(userinfo);
-  const billingPlan = await fetchMeridianBillingPlan(accessToken);
-  plan = pickHigherMeridianPlan(plan, billingPlan);
-
-  return {
-    plan,
-    isMeridianStaff: readMeridianStaffStatus(userinfo),
-    userinfo,
-  };
 }
