@@ -71,7 +71,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="dashboard-shell flex min-h-full flex-1">
       <aside className="flex w-56 shrink-0 flex-col border-r border-white/[0.06] bg-zinc-950/95">
-        <div className="px-4 py-5">
+        <div className="flex justify-center px-4 py-5">
           <DockBrand />
         </div>
 
