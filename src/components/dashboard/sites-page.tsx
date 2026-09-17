@@ -2,81 +2,33 @@
 
 import Link from "next/link";
 import { useMutation, useQuery } from "convex/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "../../../convex/_generated/api";
-import { CreateDashboardOnboarding } from "@/components/dashboard/create-dashboard-onboarding";
+import { DashboardPageHeader } from "@/components/dashboard/dashboard-page-header";
+import { DashboardSiteListItem } from "@/components/dashboard/dashboard-site-list-item";
 import { SitesEmptyState } from "@/components/dashboard/sites-empty-state";
-import {
-  buildSiteEditUrl,
-  buildSiteOrigin,
-  formatSiteHost,
-} from "@/lib/site-host";
+import { useOpenDockSite } from "@/components/dashboard/use-open-dock-site";
+import { formatSitesPageDescription } from "@/lib/dashboard-sites-summary";
+import { buildOnboardingUrl } from "@/lib/onboarding-host";
 import { userFacingError } from "@/lib/user-facing-error";
 
+const CREATE_BOT_SITE_URL = buildOnboardingUrl("/sites/link");
+
 export function SitesDashboardPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const data = useQuery(api.sites.listMySites);
   const createCustomSite = useMutation(api.sites.createCustomSite);
-  const beginSiteDiscordAuth = useMutation(
-    api.siteDiscordAuthMutations.beginSiteDiscordAuth,
-  );
+  const { openSite, openingSiteId } = useOpenDockSite();
 
   const [customSlug, setCustomSlug] = useState("");
   const [customTitle, setCustomTitle] = useState("");
+  const [customFormOpen, setCustomFormOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const resumeOnboarding = searchParams.get("onboarding") === "1";
-  const [onboardingOpen, setOnboardingOpen] = useState(resumeOnboarding);
-  const [onboardingResume, setOnboardingResume] = useState(resumeOnboarding);
-  const [onboardingSession, setOnboardingSession] = useState(
-    resumeOnboarding ? 1 : 0,
-  );
-  const [openingSiteId, setOpeningSiteId] = useState<string | null>(null);
-
-  const openSite = useCallback(
-    async (site: NonNullable<typeof data>["sites"][number]) => {
-      const returnTo = buildSiteOrigin({
-        siteId: site._id,
-        slug: site.slug,
-      });
-      if (site.hostKind === "bot_subdomain") {
-        setOpeningSiteId(site._id);
-        try {
-          const authorizeUrl = await beginSiteDiscordAuth({
-            siteSlug: site.slug,
-            returnTo,
-            origin: window.location.origin,
-          });
-          window.open(authorizeUrl, "_blank", "noopener,noreferrer");
-        } catch {
-          window.open(returnTo, "_blank", "noopener,noreferrer");
-        } finally {
-          setOpeningSiteId(null);
-        }
-        return;
-      }
-      window.open(returnTo, "_blank", "noopener,noreferrer");
-    },
-    [beginSiteDiscordAuth],
-  );
-
-  const openOnboarding = useCallback((resume = false) => {
-    setOnboardingResume(resume);
-    setOnboardingSession((current) => current + 1);
-    setOnboardingOpen(true);
-  }, []);
-
-  const closeOnboarding = useCallback(() => {
-    setOnboardingOpen(false);
-    setOnboardingResume(false);
-  }, []);
-
-  useEffect(() => {
-    if (!resumeOnboarding) return;
-    router.replace("/dashboard/sites");
-  }, [resumeOnboarding, router]);
+  const atSiteLimit =
+    data?.maxSites !== null &&
+    data?.maxSites !== undefined &&
+    data.sites.length >= data.maxSites;
+  const canCreateCustom = data !== undefined && data.plan !== "free";
 
   async function handleCreateCustomSite() {
     setBusy(true);
@@ -85,6 +37,7 @@ export function SitesDashboardPage() {
       await createCustomSite({ slug: customSlug, title: customTitle || customSlug });
       setCustomSlug("");
       setCustomTitle("");
+      setCustomFormOpen(false);
     } catch (cause) {
       setError(userFacingError(cause, "Could not create site."));
     } finally {
@@ -96,134 +49,96 @@ export function SitesDashboardPage() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <CreateDashboardOnboarding
-        open={onboardingOpen}
-        resume={onboardingResume}
-        sessionId={onboardingSession}
-        onClose={closeOnboarding}
-      />
-
-      <header className="border-b border-zinc-800/80 px-8 py-6">
-        <h1 className="text-lg font-medium tracking-wide text-zinc-100">Sites</h1>
-        {data ? (
-          <p className="mt-1 text-xs text-zinc-500">
-            Plan: {data.plan}.{" "}
-            {data.maxSites === null
-              ? "Unlimited sites."
-              : `${data.sites.length}/${data.maxSites} sites used.`}
-          </p>
-        ) : (
-          <p className="mt-1 text-xs text-zinc-600">Loading plan…</p>
-        )}
-      </header>
-
-      <div className="flex flex-1 flex-col gap-8 px-8 py-8">
-        {error ? <p className="text-xs text-red-400">{error}</p> : null}
-
-        {hasSites ? (
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-5">
-              <p className="text-sm font-medium text-zinc-200">Free bot site</p>
-              <p className="mt-2 text-xs leading-5 text-zinc-500">
-                Creates a staff panel for your bot, with Discord sign-in.
-              </p>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => openOnboarding()}
-                className="mt-4 rounded-full border border-zinc-700 px-5 py-2.5 text-sm transition-colors hover:border-zinc-500 disabled:cursor-wait disabled:opacity-60"
+      <DashboardPageHeader
+        title="Sites"
+        description={data ? formatSitesPageDescription(data) : undefined}
+        actions={
+          hasSites ? (
+            <>
+              {canCreateCustom ? (
+                <button
+                  type="button"
+                  disabled={busy || atSiteLimit}
+                  onClick={() => setCustomFormOpen((open) => !open)}
+                  className="landing-btn-secondary text-xs disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {customFormOpen ? "Cancel" : "Add custom site"}
+                </button>
+              ) : null}
+              <Link
+                href={CREATE_BOT_SITE_URL}
+                className="landing-btn-primary text-xs disabled:cursor-not-allowed disabled:opacity-60"
+                aria-disabled={busy || atSiteLimit}
+                tabIndex={busy || atSiteLimit ? -1 : undefined}
+                onClick={(event) => {
+                  if (busy || atSiteLimit) event.preventDefault();
+                }}
               >
                 Create bot site
+              </Link>
+            </>
+          ) : null
+        }
+      />
+
+      <div className="flex flex-1 flex-col gap-8 px-6 py-8 sm:px-8">
+        {error ? <p className="text-xs text-red-400">{error}</p> : null}
+
+        {atSiteLimit ? (
+          <p className="text-xs text-zinc-500">
+            You&apos;ve used all site slots on your plan.{" "}
+            <Link href="/premium" className="text-sky-400/90 hover:text-sky-300">
+              Upgrade for more
+            </Link>
+          </p>
+        ) : null}
+
+        {customFormOpen && canCreateCustom ? (
+          <div className="landing-card landing-card--static p-5 sm:p-6">
+            <p className="text-sm font-medium text-zinc-200">New custom slug site</p>
+            <p className="mt-1 text-xs text-zinc-500">
+              Pick a slug for your public URL. You can change the title anytime in the editor.
+            </p>
+            <div className="mt-4 flex max-w-md flex-col gap-3">
+              <input
+                value={customSlug}
+                onChange={(event) => setCustomSlug(event.target.value)}
+                placeholder="mysite"
+                className="rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm"
+              />
+              <input
+                value={customTitle}
+                onChange={(event) => setCustomTitle(event.target.value)}
+                placeholder="Site title"
+                className="rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm"
+              />
+              <button
+                type="button"
+                disabled={busy || !customSlug.trim()}
+                onClick={() => void handleCreateCustomSite()}
+                className="landing-btn-primary w-fit text-xs disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Create site
               </button>
             </div>
-
-            {data && data.plan !== "free" ? (
-              <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-5">
-                <p className="text-sm font-medium text-zinc-200">Custom slug site</p>
-                <div className="mt-4 flex flex-col gap-3">
-                  <input
-                    value={customSlug}
-                    onChange={(event) => setCustomSlug(event.target.value)}
-                    placeholder="mysite"
-                    className="rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm"
-                  />
-                  <input
-                    value={customTitle}
-                    onChange={(event) => setCustomTitle(event.target.value)}
-                    placeholder="Site title"
-                    className="rounded-full border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm"
-                  />
-                  <button
-                    type="button"
-                    disabled={busy}
-                    onClick={() => void handleCreateCustomSite()}
-                    className="rounded-full border border-zinc-700 px-5 py-2.5 text-sm transition-colors hover:border-zinc-500 disabled:cursor-wait disabled:opacity-60"
-                  >
-                    Create custom site
-                  </button>
-                </div>
-              </div>
-            ) : null}
           </div>
         ) : null}
 
         {data === undefined ? (
           <p className="text-xs text-zinc-600">Loading sites…</p>
         ) : hasSites ? (
-          <div className="rounded-xl border border-zinc-800 bg-zinc-950">
-            <div className="border-b border-zinc-800 px-5 py-3 text-sm text-zinc-300">
-              Your sites
-            </div>
-            <div className="divide-y divide-zinc-800">
-              {data.sites.map((site: (typeof data.sites)[number]) => (
-                <div
-                  key={site._id}
-                  className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
-                >
-                  <div>
-                    <p className="text-sm text-zinc-200">{site.title}</p>
-                    <p className="text-xs text-zinc-500">
-                      {formatSiteHost({ siteId: site._id, slug: site.slug })} ·{" "}
-                      {site.status}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => void openSite(site)}
-                      disabled={openingSiteId === site._id}
-                      className="text-xs text-zinc-400 hover:text-zinc-200 disabled:cursor-wait disabled:opacity-60"
-                    >
-                      {openingSiteId === site._id ? "Opening…" : "Open"}
-                    </button>
-                    {site.hostKind === "custom_slug" ? (
-                      <Link
-                        href={`/dashboard/sites/${site._id}/edit`}
-                        className="rounded-full border border-zinc-700 px-4 py-1.5 text-xs hover:border-zinc-500"
-                      >
-                        Edit
-                      </Link>
-                    ) : (
-                      <a
-                        href={buildSiteEditUrl({
-                          siteId: site._id,
-                          slug: site.slug,
-                        })}
-                        className="rounded-full border border-zinc-700 px-4 py-1.5 text-xs hover:border-zinc-500"
-                      >
-                        Edit
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="dashboard-site-list">
+            {data.sites.map((site) => (
+              <DashboardSiteListItem
+                key={site._id}
+                site={site}
+                onOpen={() => void openSite(site)}
+                opening={openingSiteId === site._id}
+              />
+            ))}
           </div>
         ) : (
-          <SitesEmptyState
-            onOpenOnboarding={() => openOnboarding()}
-            busy={busy}
-          />
+          <SitesEmptyState createBotSiteUrl={CREATE_BOT_SITE_URL} busy={busy} atSiteLimit={atSiteLimit} />
         )}
       </div>
     </div>

@@ -1,9 +1,13 @@
+import Link from "next/link";
+
 export function SitesEmptyState({
-  onOpenOnboarding,
+  createBotSiteUrl,
   busy,
+  atSiteLimit,
 }: {
-  onOpenOnboarding: () => void;
+  createBotSiteUrl: string;
   busy: boolean;
+  atSiteLimit: boolean;
 }) {
   return (
     <div className="relative rounded-xl bg-zinc-900/60 px-6 py-14 text-center">
@@ -27,17 +31,19 @@ export function SitesEmptyState({
       <div className="relative z-0 flex flex-col items-center">
         <h3 className="text-sm font-medium text-zinc-200">No sites yet</h3>
         <p className="mt-2 max-w-sm text-center text-xs leading-5 text-zinc-500">
-          Click the button below to link a Meridian bot and start creating your
-          very own bot dashboard.
+          Link a Meridian bot to get a staff dashboard on your subdomain.
         </p>
-        <button
-          type="button"
-          disabled={busy}
-          onClick={onOpenOnboarding}
-          className="mt-6 rounded-lg border border-zinc-800 px-3 py-2 text-xs text-zinc-400 transition-colors hover:border-zinc-700 hover:text-zinc-200 disabled:cursor-wait disabled:opacity-60"
+        <Link
+          href={createBotSiteUrl}
+          className="landing-btn-primary mt-6 text-xs disabled:cursor-wait disabled:opacity-60"
+          aria-disabled={busy || atSiteLimit}
+          tabIndex={busy || atSiteLimit ? -1 : undefined}
+          onClick={(event) => {
+            if (busy || atSiteLimit) event.preventDefault();
+          }}
         >
-          Create dashboard
-        </button>
+          Create bot site
+        </Link>
       </div>
     </div>
   );
