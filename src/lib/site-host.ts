@@ -1,6 +1,8 @@
 export const DOCK_APEX = "dock.surf";
 export const DOCK_STAGING_APEX = "dock.citrum.app";
 export const LOCAL_DEV_PORT = "3001";
+/** OAuth / auth callback host (`CUSTOM_AUTH_SITE_URL`), not a tenant site. */
+export const DOCK_API_SUBDOMAIN = "api";
 
 export type SiteHostRef = {
   siteId: string;
@@ -111,13 +113,13 @@ export function parseSiteSlugFromHost(hostname: string): string | null {
   if (host.endsWith(`.${DOCK_APEX}`)) {
     const label = host.slice(0, -(`.${DOCK_APEX}`.length));
     if (!label || label.includes(".")) return null;
-    if (label === "onboarding") return null;
+    if (label === "onboarding" || label === DOCK_API_SUBDOMAIN) return null;
     return label;
   }
   if (host.endsWith(`.${DOCK_STAGING_APEX}`)) {
     const label = host.slice(0, -(`.${DOCK_STAGING_APEX}`.length));
     if (!label || label.includes(".")) return null;
-    if (label === "onboarding") return null;
+    if (label === "onboarding" || label === DOCK_API_SUBDOMAIN) return null;
     return label;
   }
   return null;
@@ -131,6 +133,15 @@ export function isMainDockHost(hostname: string): boolean {
     host === DOCK_STAGING_APEX ||
     host === `www.${DOCK_STAGING_APEX}` ||
     isLocalhostHostname(host)
+  );
+}
+
+/** Dedicated auth API host (Meridian/Discord OAuth callbacks). */
+export function isDockApiHost(hostname: string): boolean {
+  const host = hostname.split(":")[0]?.toLowerCase() ?? "";
+  return (
+    host === `${DOCK_API_SUBDOMAIN}.${DOCK_APEX}` ||
+    host === `${DOCK_API_SUBDOMAIN}.${DOCK_STAGING_APEX}`
   );
 }
 

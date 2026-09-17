@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import {
   isLocalhostHostname,
   isCustomDomainHost,
+  isDockApiHost,
   isMainDockHost,
   isSitePreviewPath,
   parseLocalSubdomainPath,
@@ -162,6 +163,10 @@ const proxy = convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
       );
     }
     return rewriteOnboardingRequest(request, pathname);
+  }
+
+  if (isDockApiHost(hostname)) {
+    return NextResponse.next();
   }
 
   if (isLocalhostHostname(hostname)) {

@@ -1,5 +1,6 @@
 import {
   DOCK_APEX,
+  DOCK_API_SUBDOMAIN,
   DOCK_STAGING_APEX,
   LOCAL_DEV_PORT,
   isLocalhostHostname,
@@ -8,7 +9,10 @@ const DOCK_API_URL = "https://api.dock.surf";
 
 export const ONBOARDING_SUBDOMAIN = "onboarding";
 
-export const RESERVED_SITE_SLUGS = new Set([ONBOARDING_SUBDOMAIN]);
+export const RESERVED_SITE_SLUGS = new Set([
+  ONBOARDING_SUBDOMAIN,
+  DOCK_API_SUBDOMAIN,
+]);
 
 export function isReservedSiteSlug(slug: string): boolean {
   return RESERVED_SITE_SLUGS.has(slug.trim().toLowerCase());
