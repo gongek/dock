@@ -5,15 +5,15 @@ import {
   evaluateTemplateExpression,
   extractPathsFromExpression,
   parseTemplateExpression,
-} from "./expression.ts";
+} from "./expression";
 import {
   displayToStorage,
   extractStorageVariables,
   findTemplateVariableSpans,
   variableDisplayPath,
-} from "./format.ts";
-import { resolveTemplate } from "./resolve.ts";
-import type { TemplateContext } from "./context-types.ts";
+} from "./format";
+import { resolveTemplate } from "./resolve";
+import type { TemplateContext } from "./context-types";
 
 const visitorContext: TemplateContext = {
   me: {

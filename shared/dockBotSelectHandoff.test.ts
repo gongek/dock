@@ -10,7 +10,7 @@ import {
   signDockBotSelectHandoff,
   verifyDockBotSelectHandoff,
   verifyDockBotSelectHandoffFromSearchParams,
-} from "./dockBotSelectHandoff.ts";
+} from "./dockBotSelectHandoff";
 
 const SECRET = "test-dock-meridian-bot-select-secret";
 const RETURN_URL = "http://localhost:3001/callback/onboarding";
