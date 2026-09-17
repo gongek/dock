@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import type { Id } from "../_generated/dataModel";
-import { internalMutation, internalQuery } from "../_generated/server";
+import { internalMutation, internalQuery, type QueryCtx } from "../_generated/server";
 import { getCurrentUserOrNull } from "../lib/auth";
 
 export const upsertTokenByProviderAccount = internalMutation({
@@ -47,6 +47,22 @@ export const upsertTokenByProviderAccount = internalMutation({
   },
 });
 
+async function meridianAuthContextForUser(ctx: QueryCtx, userId: Id<"users">) {
+  const user = await ctx.db.get(userId);
+  const tokenRecord = await ctx.db
+    .query("meridianOAuthTokens")
+    .withIndex("by_user", (q) => q.eq("userId", userId))
+    .unique();
+
+  return {
+    meridianConnected: Boolean(user?.meridianId),
+    userId,
+    accessToken: tokenRecord?.accessToken ?? null,
+    refreshToken: tokenRecord?.refreshToken ?? null,
+    expiresAt: tokenRecord?.expiresAt ?? null,
+  };
+}
+
 export const getMeridianAuthContext = internalQuery({
   args: {},
   handler: async (ctx) => {
@@ -56,18 +72,49 @@ export const getMeridianAuthContext = internalQuery({
         meridianConnected: false,
         userId: null as Id<"users"> | null,
         accessToken: null as string | null,
+        refreshToken: null as string | null,
+        expiresAt: null as number | null,
       };
     }
 
-    const tokenRecord = await ctx.db
+    return meridianAuthContextForUser(ctx, user._id);
+  },
+});
+
+export const getMeridianAuthContextForUser = internalQuery({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => meridianAuthContextForUser(ctx, args.userId),
+});
+
+export const patchTokenForUser = internalMutation({
+  args: {
+    userId: v.id("users"),
+    accessToken: v.string(),
+    refreshToken: v.optional(v.string()),
+    expiresAt: v.optional(v.number()),
+    scope: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
       .query("meridianOAuthTokens")
-      .withIndex("by_user", (q) => q.eq("userId", user._id))
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
       .unique();
 
-    return {
-      meridianConnected: Boolean(user.meridianId),
-      userId: user._id,
-      accessToken: tokenRecord?.accessToken ?? null,
+    const now = Date.now();
+    const tokenData = {
+      userId: args.userId,
+      accessToken: args.accessToken,
+      refreshToken: args.refreshToken,
+      expiresAt: args.expiresAt,
+      scope: args.scope,
+      updatedAt: now,
     };
+
+    if (existing) {
+      await ctx.db.patch(existing._id, tokenData);
+      return;
+    }
+
+    await ctx.db.insert("meridianOAuthTokens", tokenData);
   },
 });
