@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
-import { ConvexClientProvider } from "@/components/convex-client-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Dock by Meridian",
-  description: "Dock by Meridian",
+  description:
+    "Build and publish visual dashboards for your Meridian Discord bot.",
 };
 
 export default function RootLayout({
@@ -25,19 +24,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ConvexAuthNextjsServerProvider>
-      <html
-        lang="en"
-        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      >
-        <head>
-          <link rel="preload" href="/dock-logo.svg" as="image" type="image/svg+xml" />
-          <link rel="preload" href="/dock-logo-gem-smoke.png" as="image" type="image/png" />
-        </head>
-        <body className="flex min-h-full flex-col font-sans">
-          <ConvexClientProvider>{children}</ConvexClientProvider>
-        </body>
-      </html>
-    </ConvexAuthNextjsServerProvider>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <head>
+        <link rel="preload" href="/dock-logo.svg" as="image" type="image/svg+xml" />
+        <link rel="preload" href="/dock-logo-gem-smoke.png" as="image" type="image/png" />
+      </head>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
+    </html>
   );
 }
