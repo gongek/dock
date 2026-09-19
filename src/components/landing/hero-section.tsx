@@ -1,11 +1,11 @@
 import Link from "next/link";
+import { DockLogo } from "@/components/dock-logo";
 import { LandingAtmosphere } from "@/components/landing/landing-atmosphere";
-import { LandingProductPreview } from "@/components/landing/landing-product-preview";
 
 export function HeroSection() {
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-center px-6 pt-24 pb-16">
-      <LandingAtmosphere />
+      <LandingAtmosphere showMark={false} />
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 py-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16">
         <div>
           <h1
@@ -34,8 +34,11 @@ export function HeroSection() {
             </Link>
           </div>
         </div>
-        <div data-landing-reveal="hero">
-          <LandingProductPreview />
+        <div
+          data-landing-reveal="hero"
+          className="flex justify-center lg:justify-end"
+        >
+          <DockLogo className="w-72 sm:w-80" />
         </div>
       </div>
     </section>

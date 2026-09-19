@@ -21,9 +21,11 @@ function getReducedMotion() {
 export function LandingAtmosphere({
   compact = false,
   subtle = false,
+  showMark = true,
 }: {
   compact?: boolean;
   subtle?: boolean;
+  showMark?: boolean;
 }) {
   const reduceMotion = useSyncExternalStore(
     subscribeReducedMotion,
@@ -119,7 +121,7 @@ export function LandingAtmosphere({
             : "landing-atmosphere-wash"
         }
       />
-      {compact ? null : (
+      {compact || !showMark ? null : (
         <div className="absolute top-[-8%] left-1/2 -translate-x-1/2 scale-[2.1] opacity-30 blur-md">
           {reduceMotion ? (
             // eslint-disable-next-line @next/next/no-img-element

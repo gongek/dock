@@ -7,7 +7,17 @@ import {
   gemSmokeFragmentShader,
   getShaderColorFromString,
 } from "@paper-design/shaders";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+
+function subscribeReducedMotion(onStoreChange: () => void) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", onStoreChange);
+  return () => media.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 const PROCESSED_LOGO = "/dock-logo-gem-smoke.png";
 
@@ -41,13 +51,18 @@ export function DockLogo({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const [textureReady, setTextureReady] = useState(false);
   const [shaderReady, setShaderReady] = useState(false);
+  const reduceMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    () => false,
+  );
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || reduceMotion) return;
 
     let cancelled = false;
     const img = new Image();
@@ -62,7 +77,7 @@ export function DockLogo({ className }: { className?: string }) {
     return () => {
       cancelled = true;
     };
-  }, [mounted]);
+  }, [mounted, reduceMotion]);
 
   useEffect(() => {
     if (!textureReady) return;
@@ -126,7 +141,7 @@ export function DockLogo({ className }: { className?: string }) {
   const logoClassName = normalizeLogoClassName(className);
 
   return (
-    <div className={`relative h-56 w-56 ${logoClassName}`}>
+    <div className={`relative aspect-square ${logoClassName}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/dock-logo.svg"
@@ -140,7 +155,7 @@ export function DockLogo({ className }: { className?: string }) {
           shaderReady ? "pointer-events-none opacity-0" : "opacity-100"
         }`}
       />
-      {mounted && textureReady ? (
+      {mounted && textureReady && !reduceMotion ? (
         <div
           ref={rootRef}
           className={`dock-logo-shader absolute inset-0 overflow-hidden transition-opacity duration-700 ease-in-out ${
