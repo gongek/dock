@@ -1,5 +1,6 @@
 import type { Id } from "./_generated/dataModel";
 import type { MutationCtx } from "./_generated/server";
+import { mergeUserAccounts } from "./lib/mergeUserAccounts";
 import { hasUsableEmail } from "./userProfile";
 
 export const ACCOUNT_IDENTITY_CONFLICT = "ACCOUNT_IDENTITY_CONFLICT";
@@ -15,20 +16,28 @@ type ResolveExistingUserIdArgs = {
   profile: IdentityProfile;
 };
 
-function assertSingleUserId(
+export function pickPrimaryUserId(
+  candidates: Array<Id<"users">>,
+  existingUserId: Id<"users"> | null,
+): Id<"users"> {
+  if (existingUserId && candidates.includes(existingUserId)) {
+    return existingUserId;
+  }
+  const first = candidates[0];
+  if (!first) {
+    throw new Error(ACCOUNT_IDENTITY_CONFLICT);
+  }
+  return first;
+}
+
+function uniqueUserIds(
   candidates: Array<Id<"users"> | null | undefined>,
-): Id<"users"> | null {
-  const unique = [
+): Array<Id<"users">> {
+  return [
     ...new Set(
       candidates.filter((candidate): candidate is Id<"users"> => candidate != null),
     ),
   ];
-
-  if (unique.length > 1) {
-    throw new Error(ACCOUNT_IDENTITY_CONFLICT);
-  }
-
-  return unique[0] ?? null;
 }
 
 export async function resolveExistingUserId(
@@ -72,10 +81,32 @@ export async function resolveExistingUserId(
     userByMeridianId = existingByMeridianId?._id ?? null;
   }
 
-  return assertSingleUserId([
+  const candidates = uniqueUserIds([
     validatedExistingUserId,
     userByEmail,
     userByDiscordId,
     userByMeridianId,
   ]);
+
+  if (candidates.length === 0) {
+    return null;
+  }
+
+  const primaryUserId = pickPrimaryUserId(candidates, validatedExistingUserId);
+  for (const secondaryUserId of candidates) {
+    if (secondaryUserId === primaryUserId) {
+      continue;
+    }
+    try {
+      await mergeUserAccounts(ctx, {
+        primaryUserId,
+        secondaryUserId,
+        discordUserId: profile.discordId,
+      });
+    } catch {
+      throw new Error(ACCOUNT_IDENTITY_CONFLICT);
+    }
+  }
+
+  return primaryUserId;
 }

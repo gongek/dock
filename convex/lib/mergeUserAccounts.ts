@@ -31,6 +31,16 @@ export async function mergeUserAccounts(
     );
   }
 
+  if (
+    primary.discordId &&
+    secondary.discordId &&
+    primary.discordId !== secondary.discordId
+  ) {
+    throw new Error(
+      "These Dock profiles are linked to different Discord accounts and cannot be merged automatically.",
+    );
+  }
+
   if (secondary.discordId) {
     await ctx.db.patch(args.secondaryUserId, { discordId: undefined });
   }

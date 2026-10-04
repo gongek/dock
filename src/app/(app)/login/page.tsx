@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 export default async function Login({
   searchParams,
 }: {
-  searchParams: Promise<{ returnTo?: string }>;
+  searchParams: Promise<{ returnTo?: string; error?: string }>;
 }) {
-  const { returnTo } = await searchParams;
-  return <LoginPage returnTo={returnTo} />;
+  const { returnTo, error } = await searchParams;
+  return <LoginPage returnTo={returnTo} error={error} />;
 }
