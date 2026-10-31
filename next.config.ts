@@ -6,6 +6,16 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "cdn.mrdn.gg",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "staging-cdn.mrdn.gg",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "dock-cdn.mrdn.online",
       },
     ],

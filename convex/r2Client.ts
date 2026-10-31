@@ -35,7 +35,7 @@ function getCdnUploadHmacSecret(): string {
   return secretAccessKey;
 }
 
-/** Browser PUT URL on `dock-cdn.mrdn.online/upload/...`. */
+/** Browser PUT URL on `cdn.mrdn.gg/dock/upload/...`. */
 export async function createR2PresignedPutUrl(args: {
   key: string;
   contentType: string;

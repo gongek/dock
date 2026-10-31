@@ -1,4 +1,4 @@
-import { DOCK_CDN_ORIGIN } from "./cdnOrigin";
+import { resolveDockCdnBaseUrl } from "./cdnOrigin";
 
 export const CDN_UPLOAD_PATH_PREFIX = "/upload/";
 export const CDN_UPLOAD_TTL_SECONDS = 900;
@@ -70,7 +70,7 @@ export async function createCdnUploadUrl(args: {
     expiresAtUnixSeconds,
   });
   const sig = await hmacSha256Hex(args.secret, payload);
-  const url = new URL(`${DOCK_CDN_ORIGIN}${cdnUploadPath(args.key)}`);
+  const url = new URL(`${resolveDockCdnBaseUrl()}${cdnUploadPath(args.key)}`);
   url.searchParams.set("exp", String(expiresAtUnixSeconds));
   url.searchParams.set("sig", sig);
   return url.toString();
