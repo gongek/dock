@@ -20,12 +20,33 @@ import { AuthLegalFooter } from "@/components/auth-legal-footer";
 import { shouldShowAuthLegalFooter } from "@/lib/auth-legal";
 import { userFacingError } from "@/lib/user-facing-error";
 
-export function LoginPage({ returnTo }: { returnTo?: string }) {
+function loginCallbackErrorMessage(error?: string) {
+  if (error === "meridian") {
+    return "Meridian login did not complete. Try again.";
+  }
+  if (error === "discord") {
+    return "Discord login did not complete. Try again.";
+  }
+  if (error === "account_conflict") {
+    return "This login matches more than one Dock account. Try the other provider, or contact support.";
+  }
+  return null;
+}
+
+export function LoginPage({
+  returnTo,
+  error: callbackError,
+}: {
+  returnTo?: string;
+  error?: string;
+}) {
   const router = useRouter();
   const { signIn, signOut } = useAuthActions();
   const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
   const user = useQuery(api.users.currentUser);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    () => loginCallbackErrorMessage(callbackError),
+  );
   const [pendingProvider, setPendingProvider] = useState<
     "meridian" | "discord" | null
   >(null);

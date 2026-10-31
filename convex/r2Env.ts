@@ -1,4 +1,4 @@
-import { DOCK_CDN_ORIGIN } from "../shared/cdnOrigin";
+import { resolveDockCdnBaseUrl } from "../shared/cdnOrigin";
 
 export const MERIDIAN_CDN_BUCKET_NAME = "meridian-cdn";
 
@@ -11,7 +11,7 @@ export function tryPublicUrlForR2Key(key: string): string | null {
     .split("/")
     .map((segment) => encodeURIComponent(segment))
     .join("/");
-  return `${DOCK_CDN_ORIGIN}/${encoded}`;
+  return `${resolveDockCdnBaseUrl()}/${encoded}`;
 }
 
 export function publicUrlForR2Key(key: string): string {

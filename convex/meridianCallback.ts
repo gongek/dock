@@ -17,6 +17,7 @@ import {
 } from "./meridian/userinfo";
 import { resolveMeridianUserPlan } from "./meridian/planResolve";
 import { sanitizeUserProfile } from "./userProfile";
+import { ACCOUNT_IDENTITY_CONFLICT } from "./userIdentity";
 
 const providerId = "meridian";
 
@@ -24,11 +25,19 @@ function getCookies(request: Request) {
   return parseCookies(request.headers.get("Cookie") ?? "");
 }
 
-function loginErrorUrl(destinationUrl: string) {
+function loginErrorCode(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  if (message.includes(ACCOUNT_IDENTITY_CONFLICT)) {
+    return "account_conflict";
+  }
+  return "meridian";
+}
+
+function loginErrorUrl(destinationUrl: string, error: unknown) {
   const url = new URL(destinationUrl);
   url.pathname = "/login";
   url.search = "";
-  url.searchParams.set("error", "meridian");
+  url.searchParams.set("error", loginErrorCode(error));
   return url.toString();
 }
 
@@ -130,6 +139,6 @@ export const meridianOAuthCallback = httpAction(async (ctx, request) => {
     const destinationUrl = await resolveRedirectDestination(
       maybeRedirectTo?.redirectTo,
     );
-    return Response.redirect(loginErrorUrl(destinationUrl));
+    return Response.redirect(loginErrorUrl(destinationUrl, error));
   }
 });

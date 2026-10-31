@@ -1,5 +1,5 @@
 /**
- * Browser PUT to a `dock-cdn.mrdn.online/upload/...` URL (HMAC from Convex, Worker writes R2).
+ * Browser PUT to a `cdn.mrdn.gg/dock/upload/...` URL (HMAC from Convex, Worker writes R2).
  */
 export async function putFileToR2PresignedUrl(args: {
   uploadUrl: string;
